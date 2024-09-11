@@ -1,0 +1,40 @@
+/* Footer.css */
+
+/* Footer 스타일 */
+.footer {
+  
+    height: 200px;
+    display: flex;
+    justify-content: space-around;
+    padding: 30px;
+    background-color: #f8f8f8;
+  }
+  
+  .footer-left, .footer-middle, .footer-right {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+  }
+  
+  .footer-left .social-icons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .footer-middle ul, .footer-right ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .footer-middle ul li, .footer-right ul li {
+    margin-bottom: 8px;
+  }
+  
+  .footer-middle ul li a, .footer-right ul li a {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .footer-middle ul li a:hover, .footer-right ul li a:hover {
+    text-decoration: underline;
+  }

@@ -1,0 +1,56 @@
+/* QuoteCardSection.css */
+
+/* Quote 카드 섹션 */
+.quote-card-section {
+    margin: 40px 40px;
+  }
+  
+  .quote-card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .quote-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #fff;
+  }
+  
+  .quote-content {
+    text-align: left;
+  }
+  
+  .quote {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+  
+  .quote-author {
+    display: flex;
+    align-items: center;
+  }
+  
+  .author-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 12px;
+  }
+  
+  .author-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .author-title {
+    font-size: 1em;
+    font-weight: bold;
+  }
+  
+  .author-description {
+    font-size: 0.9em;
+    color: #666;
+  }

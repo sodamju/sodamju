@@ -1,0 +1,46 @@
+/* MainContent.css */
+.main {
+  display: flex;          /* Flexbox 레이아웃 사용 */
+  flex-direction: column; /* 자식 요소들을 세로로 정렬 */
+  justify-content: flex-end;
+}
+.main-content {
+  
+  text-align: center;
+  padding: 50px 20px;
+    
+  }
+  
+  .title {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+  
+  .subtitle {
+    font-size: 20px;
+    color: #666;
+  }
+  
+  .search-bar {
+    margin: 20px 0;
+    border-radius: 50px;
+  }
+  
+  .search-bar input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    width: 250px;
+  }
+  
+  .search-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    background-color: #a5673f;
+    color: #fff;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 50px;
+  }

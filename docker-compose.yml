@@ -20,7 +20,10 @@ services:
       - "3000:80"
     networks:
       - app-network
-
+    volumes:
+        - ./frontend/src:/usr/src/app/src  # 로컬 소스 코드 동기화
+        - ./frontend/public:/usr/src/app/public  # public 폴더도 동기화
+  
   mongo:
     image: mongo:6.0
     volumes:

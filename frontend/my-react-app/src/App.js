@@ -1,41 +1,22 @@
-import './App.css';
-import React, {useEffect, useState} from 'react';
-import { fetchDocuments } from './api/myApi';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ListPage from './pages/ListPage';
+import DetailPage from './pages/DetailPage';
 
 function App() {
-    const [documents, setDocuments] = useState([]);
-
-    useEffect(() => {
-      const getDocuments = async () => {
-        try {
-          const data = await fetchDocuments();
-          setDocuments(data);
-        } catch (error) {
-          console.error('Error fetching documents', error);
-        }
-      };
-  
-      getDocuments();
-    }, []);
-
   return (
+    <Router>
       <div>
-          <h1>Documents List</h1>
-          <table>
-              <thead>
-                  <tr>
-                      <th>Name</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {documents.map(doc => (
-                      <tr key={doc.id}>
-                          <td>{doc.name}</td>
-                      </tr>
-                  ))}
-              </tbody>
-          </table>
+        {/* Switch 대신 Routes 사용 */}
+        <Routes>
+          {/* component 대신 element를 사용하고 JSX로 컴포넌트를 전달 */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/ListPage" element={<ListPage />} />
+          <Route path="/DetailPage" element={<DetailPage />} />
+        </Routes>
       </div>
+    </Router>
   );
 }
 
