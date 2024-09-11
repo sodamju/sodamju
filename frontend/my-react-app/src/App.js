@@ -1,41 +1,24 @@
-import './App.css';
-import React, {useEffect, useState} from 'react';
-import { fetchDocuments } from './api/myApi';
+// src/App.js
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import Layout from './components/layout/Layout'
+import HomePage from './pages/HomePage';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import FindPassword from './pages/FindPassword';
 
 function App() {
-    const [documents, setDocuments] = useState([]);
-
-    useEffect(() => {
-      const getDocuments = async () => {
-        try {
-          const data = await fetchDocuments();
-          setDocuments(data);
-        } catch (error) {
-          console.error('Error fetching documents', error);
-        }
-      };
-  
-      getDocuments();
-    }, []);
-
   return (
-      <div>
-          <h1>Documents List</h1>
-          <table>
-              <thead>
-                  <tr>
-                      <th>Name</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {documents.map(doc => (
-                      <tr key={doc.id}>
-                          <td>{doc.name}</td>
-                      </tr>
-                  ))}
-              </tbody>
-          </table>
-      </div>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/Signup" element={<Signup />} />
+          <Route path="/FindPassword" element={<FindPassword />}/>
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 
