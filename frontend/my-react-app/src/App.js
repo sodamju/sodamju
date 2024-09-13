@@ -6,6 +6,8 @@ import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import FindPassword from './pages/FindPassword';
+import MyPage from './pages/MyPage';
+import EditMember from './pages/EditMember';
 
 function App() {
   return (
@@ -14,8 +16,10 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/Signup" element={<Signup />} />
-          <Route path="/FindPassword" element={<FindPassword />}/>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/findpassword" element={<FindPassword />}/>
+          <Route path="/mypage" element={<MyPage />}/>
+          <Route path="/edit-member" element={<EditMember />}/>
         </Routes>
       </Layout>
     </Router>
