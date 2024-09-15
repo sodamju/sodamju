@@ -1,0 +1,14 @@
+a{
+    color:#474747;
+}
+/* 네비탭 설정 */
+.nav-link{
+    color:#2C2C2C;
+}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: #2C2C2C;
+}
+.nav-link:focus, .nav-link:hover{
+    background-color: #D9D9D9;
+    color:#2C2C2C;
+}
