@@ -1,0 +1,35 @@
+/* Header.css */
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #8A9972; /* 전통 한지 색상 */
+}
+
+.logo {
+  font-family: 'Noto Serif KR', serif; /* 한글 서체 사용 */
+  font-size: 24px;
+  color: #555;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.btn {
+  padding: 5px 10px;
+  margin-left: auto;
+  background-color: #586149;
+  color: white;
+  border-radius: 50px;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.nav .btn:hover {
+  background-color: #454D39;
+}
