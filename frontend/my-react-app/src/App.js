@@ -23,9 +23,9 @@ function App() {
           <Route path="/findpassword" element={<FindPassword />}/>
           <Route path="/mypage" element={<MyPage />}/>
           <Route path="/edit-member" element={<EditMember />}/>
-          <Route path="/review" element={<Review />}/>
+          <Route path="/review/:productId" element={<Review />}/>
           <Route path="/ListPage" element={<ListPage />} />
-          <Route path="/DetailPage/:id" element={<DetailPage />} />
+          <Route path="/DetailPage/:productId" element={<DetailPage />} />
         </Routes>
       </Layout>
     </Router>
