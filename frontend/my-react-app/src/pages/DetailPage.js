@@ -26,7 +26,7 @@ function DetailPage() {
                 console.error('Error fetching product details:', error);
             }
         };
-        
+
         fetchProductDetails();
     }, [productId]);
 
@@ -40,7 +40,7 @@ function DetailPage() {
             <Header />
             {product && <ProductCard product={product} />}  {/* product 정보를 ProductCard로 전달 */}
             <InfoCard />
-            <ReviewList />
+            {product && <ReviewList productId={productId} />}
             <button onClick={handleReviewClick} className="write-review-btn">
                 리뷰 쓰기
             </button>

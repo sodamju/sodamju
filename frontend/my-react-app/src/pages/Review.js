@@ -53,6 +53,7 @@ const Review = () => {
             reviewText,
             tipText,
             images: selectedImages,
+            createdAt: new Date().toISOString()
         };
 
         try {
