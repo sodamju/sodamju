@@ -1,0 +1,24 @@
+/* ContentSection.css */
+.content-section {
+  display: flex;
+  margin: 0 20px;
+  padding: 50px 20px;
+  align-items: center;
+  }
+  
+  .image-placeholder {
+    width: 400px;
+    height: 250px;
+    background-color: #ccc;
+    margin-right: 20px;
+  }
+  
+  .text-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .text-content p {
+    font-size: 1rem;
+    color: #666;
+  }

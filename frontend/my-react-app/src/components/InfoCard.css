@@ -1,0 +1,28 @@
+.info-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.info-card {
+    width: 95%;
+    background-color: #f8f9fa;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .info-card .info-title {
+    color: #333;
+    font-weight: bold;
+    margin: 0 0 10px;
+  }
+  
+  .info-card p {
+    color: #666;
+    margin: 0;
+    font-size: 12px;
+  }
+  
