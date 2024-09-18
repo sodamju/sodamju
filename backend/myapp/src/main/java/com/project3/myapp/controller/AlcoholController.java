@@ -17,8 +17,15 @@ public class AlcoholController {
         return alcoholService.getAllAlcohols();
     }
 
+    //카테고리별 필터링
     @GetMapping("/category")
     public List<Alcohol> getAlcoholsByCategory(@RequestParam String category) {
         return alcoholService.getAlcoholsByCategory(category);
+    }
+
+    // 특정 제품의 세부 정보 반환
+    @GetMapping("/{id}")
+    public Alcohol getAlcoholById(@PathVariable String id) {
+        return alcoholService.getAlcoholById(id);  // ID로 제품 정보 반환
     }
 }

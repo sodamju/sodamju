@@ -25,7 +25,7 @@ function App() {
           <Route path="/edit-member" element={<EditMember />}/>
           <Route path="/review" element={<Review />}/>
           <Route path="/ListPage" element={<ListPage />} />
-          <Route path="/DetailPage" element={<DetailPage />} />
+          <Route path="/DetailPage/:id" element={<DetailPage />} />
         </Routes>
       </Layout>
     </Router>

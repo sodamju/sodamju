@@ -13,7 +13,7 @@ public class Alcohol {
     private String manufacture;
     private String ingredient;
     private String volume;
-    private String ABV;
+    private String abv;
     private String description;
 
     public String getId() {
@@ -72,12 +72,12 @@ public class Alcohol {
         this.volume = volume;
     }
 
-    public String getABV() {
-        return this.ABV;
+    public String getabv() {
+        return this.abv;
     }
 
-    public void setABV(String ABV) {
-        this.ABV = ABV;
+    public void setabv(String abv) {
+        this.abv = abv;
     }
 
     public String getDescription() {

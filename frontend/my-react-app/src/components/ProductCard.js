@@ -1,38 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import './ProductCard.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 function ProductCard() {
+  const { id } = useParams();  // URL에서 id 파라미터 가져오기
+  const [product, setProduct] = useState(null);  // 제품 데이터 상태
+
+  // 백엔드에서 제품 데이터를 가져오는 함수
+  const fetchProductDetails = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/alcohols/${id}`);
+      const data = await response.json();
+      setProduct(data);  // 제품 데이터를 상태에 저장
+    } catch (error) {
+      console.error('Error fetching product details:', error);
+    }
+  };
+
+  // 컴포넌트 마운트 시 데이터 가져오기
+  useEffect(() => {
+    fetchProductDetails();
+  }, [id]);
+
+  // 데이터 로딩 중일 때
+  if (!product) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="productCard">
       <div className="topSection">
         <div className="imageContainer">
-          {/* 이미지가 표시될 부분 */}
+          <img src={product.thumUrl} alt={product.title} />  {/* 제품 이미지 */}
         </div>
         <div className="productDetails">
-            <div className='category'>
-                <span>주류 카테고리</span>
-            </div>
-            <h2>주류 이름</h2>
-            <p>가격이 들어가는 부분입니다</p>
-            <div className="likes">
-            <span><FontAwesomeIcon icon={faHeart} /> 좋아요수   (리뷰수)</span>
-            </div>
+          <div className="category">
+            <span>{product.category}</span>  {/* 카테고리 */}
+          </div>
+          <h2>{product.title}</h2>  {/* 주류 이름 */}
+          <p>가격: 가격 정보를 여기에 추가하세요</p>
+          <div className="likes">
+            <span><FontAwesomeIcon icon={faHeart} /> 좋아요수 (리뷰수)</span>
+          </div>
         </div>
       </div>
       <div className="description">
-            <p className='description-title'>상품정보</p>
-            <p><strong>전통주 명</strong> : 전통주 이름이 들어가는 부분입니다.</p>
-            <p><strong>도수</strong> : 도수가 들어가는 부분입니다.</p>
-            <p><strong>규격</strong> : 규격이 들어가는 부분입니다.</p>
-            <p><strong>주 원료</strong> : 주 원료가 들어가는 부분입니다.</p>
-            <p><strong>제조사</strong> : 제조사가 들어가는 부분입니다.</p>
-            
-        </div>
-        <div className='spec'>
-        <p>Excepteur efficient emerging, minim veniam anim aute carefully curated Ginza conversation exquisite perfect nostrud nisi intricate Content. Qui international first-class nulla ut. Punctual adipisicing, essential lovely queen tempor eiusmod irure. Exclusive izakaya charming Scandinavian impeccable aute quality of life soft power pariatur Melbourne occaecat discerning. Qui wardrobe aliquip, et Porter destination Toto remarkable officia Helsinki excepteur Basset hound. Zürich sleepy perfect consectetur.</p>
-        </div>
+        <p className='description-title'>상품정보</p>
+        <p><strong>전통주 명</strong>: {product.title}</p>
+        <p><strong>도수</strong>: {product.abv}</p>
+        <p><strong>규격</strong>: {product.volume}</p>
+        <p><strong>주 원료</strong>: {product.ingredient}</p>
+        <p><strong>제조사</strong>: {product.manufacture}</p>
+      </div>
     </div>
   );
 }
