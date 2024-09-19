@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';  // URL 파라미터를 받아오기 위한 훅
+import { useNavigate, useParams } from 'react-router-dom'; 
 import { Image, Button, Form, Card, Container, Row, Col } from 'react-bootstrap';
 import StarComponent from '../components/StarComponent';
 import './Review.css';
 
 const Review = () => {
-    const { productId } = useParams();  // URL에서 productId 파라미터를 가져옴
-    const [product, setProduct] = useState(null);  // 제품 정보 저장할 상태
+    const { productId } = useParams();  
+    const [product, setProduct] = useState(null);  
     const [rating, setRating] = useState(0);
     const [reviewText, setReviewText] = useState('');
     const [tipText, setTipText] = useState('');
-    const [selectedImages, setSelectedImages] = useState([]);
-    
+    const [selectedImages, setSelectedImages] = useState([]); // AWS S3 URL이 저장될 상태
+    const [formErrors, setFormErrors] = useState({});  // 폼 에러 상태
+
     // 제품 정보를 가져오는 함수
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -21,7 +22,7 @@ const Review = () => {
                     throw new Error('제품 정보를 불러오지 못했습니다.');
                 }
                 const data = await response.json();
-                setProduct(data);  // 제품 정보 설정
+                setProduct(data); 
             } catch (error) {
                 console.error('Error fetching product details:', error);
             }
@@ -30,11 +31,48 @@ const Review = () => {
         fetchProductDetails();
     }, [productId]);
 
-    // 사진을 선택하면 상태에 저장하고 미리보기 제공
-    const handleImageChange = (e) => {
+    // 리뷰 제출 전에 폼 검증
+    const validateForm = () => {
+        const errors = {};
+        if (rating === 0) {
+            errors.rating = '필수 입력항목입니다';  // 별점이 없으면 에러 표시
+        }
+        if (!reviewText.trim()) {
+            errors.reviewText = '필수 입력항목입니다';  // 리뷰가 없으면 에러 표시
+        }
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;  // 에러가 없으면 true 반환
+    };
+
+    // AWS S3에 파일 업로드
+    const uploadImageToS3 = async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        // 업로드를 처리하는 API 엔드포인트로 요청
+        const response = await fetch('http://localhost:8080/api/upload', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error('이미지 업로드에 실패했습니다.');
+        }
+
+        const data = await response.json();
+         // 반환된 이미지 URL 확인을 위한 로그
+         console.log('S3에서 반환된 이미지 URL:', data.imageUrl);
+        return data.imageUrl; // S3에서 반환된 이미지 URL
+    };
+
+    // 사진을 선택하고 S3에 업로드한 후 상태에 저장
+    const handleImageChange = async (e) => {
         const files = Array.from(e.target.files);
-        const imageUrls = files.map((file) => URL.createObjectURL(file));
-        setSelectedImages((prevImages) => [...prevImages, ...imageUrls]);
+        const uploadedImageUrls = await Promise.all(files.map(async (file) => {
+            return await uploadImageToS3(file); // S3에 업로드
+        }));
+
+        setSelectedImages((prevImages) => [...prevImages, ...uploadedImageUrls]); // S3에서 반환된 URL들을 상태에 저장
     };
 
     // 특정 사진 삭제 함수
@@ -46,13 +84,15 @@ const Review = () => {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        if (!validateForm()) {
+            return;  // 폼 검증에 실패하면 제출 중단
+        }
         const reviewData = {
-            productId,  // 제품 ID 저장
+            productId,  
             rating,
             reviewText,
             tipText,
-            images: selectedImages,
+            images: selectedImages, // S3에 저장된 이미지 URL들을 보냄
             createdAt: new Date().toISOString()
         };
 
@@ -68,7 +108,6 @@ const Review = () => {
             if (response.ok) {
                 const result = await response.json();
                 console.log('리뷰가 성공적으로 저장되었습니다:', result);
-                // 성공적으로 작성후 디테일페이지로 돌아가기
                 navigate(`/DetailPage/${productId}`);
             } else {
                 console.error('리뷰 저장에 실패했습니다.');
@@ -81,7 +120,6 @@ const Review = () => {
     return (
         <Container>
             <Row className='mt-3 mb-3'><h1>리뷰 쓰기</h1></Row>
-            {/* 상품 정보 카드 */}
             {product && (
                 <Row className='mt-3 mb-3'>
                     <Card className='p-3'>
@@ -93,10 +131,10 @@ const Review = () => {
                             </Col>
                             <Col xs={9}>
                                 <Row>
-                                    <h1>{product.title}</h1>  {/* 제품명 표시 */}
+                                    <h1>{product.title}</h1>
                                 </Row>
                                 <Row>
-                                    <div>{product.description}</div>  {/* 제품 설명 표시 */}
+                                    <div>{product.description}</div>
                                 </Row>
                             </Col>
                         </Row>
@@ -107,8 +145,8 @@ const Review = () => {
                 <Row className='mt-3 mb-3'>
                     <Card className='p-3 text-center'>
                         <Form.Group>
-                            <Form.Label>별점</Form.Label>
-                            <StarComponent rating={rating} setRating={setRating} />
+                            <Form.Label>별점{formErrors.rating && <div style={{ color: 'red' }}>{formErrors.rating}</div>}</Form.Label>
+                            <StarComponent rating={rating} setRating={setRating} />                       
                         </Form.Group>
                     </Card>
                 </Row>
@@ -123,6 +161,7 @@ const Review = () => {
                                 placeholder='제품에 대해 자세한 리뷰를 작성해 주세요.'
                                 onChange={(e) => setReviewText(e.target.value)}
                             />
+                            {formErrors.reviewText && <div style={{ color: 'red' }}>{formErrors.reviewText}</div>}
                         </Form.Group>
                     </Card>
                 </Row>
