@@ -1,5 +1,6 @@
 // src/App.js
 import React from 'react';
+import { AuthProvider } from './contexts/AuthContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import HomePage from './pages/HomePage';
@@ -16,21 +17,23 @@ import Review from './pages/Review';
 
 function App() {
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/Signup" element={<Signup />} />
-          <Route path="/FindPassword" element={<FindPassword />}/>
-          <Route path="/mypage" element={<MyPage />}/>
-          <Route path="/edit-member" element={<EditMember />}/>
-          <Route path="/review" element={<Review />}/>
-          <Route path="/ListPage" element={<ListPage />} />
-          <Route path="/DetailPage" element={<DetailPage />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <AuthProvider>  {/* AuthProvider로 Router 전체를 감싸기 */}
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/Signup" element={<Signup />} />
+            <Route path="/FindPassword" element={<FindPassword />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/edit-member" element={<EditMember />} />
+            <Route path="/review" element={<Review />} />
+            <Route path="/ListPage" element={<ListPage />} />
+            <Route path="/DetailPage" element={<DetailPage />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </AuthProvider>
   );
 }
 
