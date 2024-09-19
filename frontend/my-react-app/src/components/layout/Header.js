@@ -1,28 +1,30 @@
-// src/components/Header.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-import logo from '../../assets/images/logo.png';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { useAuth } from '../../contexts/AuthContext';
+import './Header.css';
 
-const Header = () => {
+function Header() {
+  const { user, logout } = useAuth();  // 로그인 상태와 로그아웃 함수 사용
+
   return (
-    <header>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary p-3">
-        <div class="container-fluid">
-          <Link class="navbar-brand" to="/">
-            <img src={logo} alt="Logo" width="50" height="50" class="d-inline-block align-text-top"/>
-            SipSip
-          </Link>
-        </div>
-        <div>
-          <Button class="btn" variant="outline-secondary" href="/login">login</Button>
-        </div>
+    <header className="header">
+      
+      <nav className="nav">
+        <Link class="navbar-brand" to="/">
+          <div className="logo">K-sipsip</div>
+        </Link>
+        {user ? (
+          <>
+            <div className='greeting'>안녕하세요, {user.nickname}님</div>
+            <Link to={"/mypage"} className='btn btn-logged-in'>마이페이지</Link>
+            <button className='btn btn-logged-in' onClick={logout}>로그아웃</button>
+          </>
+        ) : (
+          <Link to={"/login"} className='btn btn-logged-out'>로그인</Link>
+        )}
       </nav>
     </header>
   );
-};
+}
 
 export default Header;
-
-

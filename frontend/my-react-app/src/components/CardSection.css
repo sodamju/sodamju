@@ -23,16 +23,22 @@
 }
 
 .filter-btn {
+  color: #33382A;
   padding: 10px 15px;
   background-color: #e0e0e0;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
   white-space: nowrap;
 }
 
+.filter-btn:hover {
+  background-color: #454D39;
+  color: white;
+}
+
 .filter-btn.active {
-  background-color: #a5673f;
+  background-color: #454D39;
   color: white;
 }
 
@@ -86,10 +92,13 @@
   font-size: 12px;
   padding: 5px 10px;
   border-radius: 30px;
-  background-color: #a5673f;
+  background-color: #586149;
   color: white;
   border: none;
   cursor: pointer;
+}
+.card-btn:hover{
+  background-color: #454D39;
 }
 
 /* 페이지네이션 스타일 */
@@ -101,8 +110,12 @@
 
 .pagination-btn {
   padding: 10px 20px;
-  background-color: #a5673f;
+  background-color: #586149;
   color: white;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
+}
+.pagination-btn:hover{
+  background-color: #454D39;
 }

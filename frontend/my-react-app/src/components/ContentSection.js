@@ -1,6 +1,6 @@
 import React from 'react';
 import './ContentSection.css';
-import bottleImage from '../images/bottle.webp'; // 이미지 import
+import bottleImage from '../assets/images/bottle.webp'; // 이미지 import
 
 function ContentSection() {
   return (

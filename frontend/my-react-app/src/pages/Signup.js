@@ -10,17 +10,19 @@ const Signup = () => {
         email: '',
         password: '',
         nickname: '',
-        ageGroup:'',
+        ageGroup: '',
         level: '',
     });
 
     const navigate = useNavigate();
 
     //다음 단계로 이동
+
     const nextStep = () => {
-        setStep(step +1);
+        setStep(step + 1);
         console.log(formData);
     };
+
 
     //회원 가입 최종 제출
     const handleSubmit = async () => {
@@ -42,13 +44,13 @@ const Signup = () => {
         }
     };
 
-    //현재 단계에 맞는 컴포넌트 렌더링
+    // 현재 단계에 맞는 컴포넌트 렌더링
     switch (step) {
-        case 1 : 
+        case 1:
             return <MemberJoin formData={formData} setFormData={setFormData} nextStep={nextStep} />;
-        case 2 :
+        case 2:
             return <MemberJoin2 formData={formData} setFormData={setFormData} handleSubmit={handleSubmit} />;
-        default :
+        default:
             return <MemberJoin formData={formData} setFormData={setFormData} nextStep={nextStep} />;
     }
 };

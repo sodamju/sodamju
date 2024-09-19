@@ -12,20 +12,31 @@ public class Member {
     private String nickname;
     private String ageGroup;
     private String level;
+	private String profileImageUrl;  // 이미지 경로 필드 추가
 
     // 기본 생성자
     public Member() {}
 
     // 생성자
-    public Member(String email, String password, String nickname, String ageGroup, String level) {
+    public Member(String email, String password, String nickname, String ageGroup, String level, String profileImageUrl) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.ageGroup = ageGroup;
         this.level = level;
+		this.profileImageUrl = profileImageUrl;
     }
 
     // getter와 setter 추가
+
+	// ID에 대한 Getter 추가
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
     
 	public String getEmail() {
 		return this.email;
@@ -66,4 +77,12 @@ public class Member {
 	public void setLevel(String level) {
 		this.level = level;
 	}
+
+	public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+	public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
 }

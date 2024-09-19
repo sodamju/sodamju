@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';  // URL 파라미터와 페이지 이동을 위한 훅
 import '../App.css';
-import Header from '../components/Header';
 import ProductCard from '../components/ProductCard';
 import InfoCard from '../components/InfoCard';
 import ReviewList from '../components/ReviewList';
-import Footer from '../components/Footer';
 
 function DetailPage() {
     const { productId } = useParams();  // URL에서 productId를 가져옴 (예: /DetailPage/:productId)
