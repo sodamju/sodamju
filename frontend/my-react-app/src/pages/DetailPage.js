@@ -35,14 +35,12 @@ function DetailPage() {
 
     return (
         <div className="content">
-            <Header />
             {product && <ProductCard product={product} />}  {/* product 정보를 ProductCard로 전달 */}
             <InfoCard />
             {product && <ReviewList productId={productId} />}
             <button onClick={handleReviewClick} className="write-review-btn">
                 리뷰 쓰기
             </button>
-            <Footer />
         </div>
     );
 }

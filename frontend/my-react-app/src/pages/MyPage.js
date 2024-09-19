@@ -1,15 +1,12 @@
-// src/pages/MyPage.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Nav, Tab, Stack, Badge, Image, Card ,Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { Nav, Tab, Stack, Badge, Image, Card, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import ReviewCardComponent from '../components/ReviewCardComponent';
 import FavoritesCardComponent from '../components/FavoritesCardComponent';
 import { useAuth } from '../contexts/AuthContext';  // 로그인한 사용자 정보 사용
 import axiosInstance from '../api/myApi'; // Axios 인스턴스
-import defaultUserImg from '../assets/images/User.png';
+import defaultUserImg from '../assets/images/user.png';
 import './MyPage.css';
-
-
 
 const MyPage = () => {
     const { user } = useAuth();  // 로그인한 사용자 정보 (user.id 필요)
@@ -19,13 +16,13 @@ const MyPage = () => {
     // 사용자 정보 불러오기
     useEffect(() => {
         if (user && user.id) {
-        axiosInstance.get(`/members/${user.id}`)
-            .then(response => {
-            setUserInfo(response.data);  // 사용자 정보 저장
-            })
-            .catch(error => {
-            console.error('Error fetching user info:', error);
-            });
+            axiosInstance.get(`/members/${user.id}`)
+                .then(response => {
+                    setUserInfo(response.data);  // 사용자 정보 저장
+                })
+                .catch(error => {
+                    console.error('Error fetching user info:', error);
+                });
         }
     }, [user]);
 
@@ -34,7 +31,7 @@ const MyPage = () => {
         setSelectedFile(e.target.files[0]);
     };
 
-    // 파일 업로드 요청
+    // 파일 업로드 요청 및 DB에 업데이트
     const handleUpload = async () => {
         if (!selectedFile || !user) return;
 
@@ -42,14 +39,25 @@ const MyPage = () => {
         formData.append('file', selectedFile);
 
         try {
-            const response = await axiosInstance.post(`/members/${user.id}/upload-profile`, formData, {
+            // S3 업로드를 위한 백엔드 API 호출
+            const response = await axiosInstance.post(`/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            // 업로드 후 사용자 정보 업데이트
-            setUserInfo(response.data);
-            console.log(userInfo.profileImageUrl)
+
+            const imageUrl = response.data.imageUrl;  // S3에서 반환된 이미지 URL
+            console.log('S3 이미지 URL:', imageUrl);
+
+           // 업로드 후 사용자 정보 업데이트
+           const updatedUserInfo = { ...userInfo, profileImageUrl: imageUrl };
+           setUserInfo(updatedUserInfo);
+
+           // 이미지 URL을 백엔드에 PUT 요청으로 전송 (순수 문자열로 전송)
+            await axiosInstance.put(`/members/${user.id}/profile-image`, {
+                profileImageUrl: imageUrl,  // 순수 문자열 전송
+            });
+
         } catch (error) {
             console.error('Error uploading file:', error);
         }
@@ -59,6 +67,7 @@ const MyPage = () => {
     if (!userInfo) {
         return <p>로딩 중...</p>;
     }
+
     return (
         <Container>
             <Row className='mt-3 mb-3'><h3>내 정보</h3></Row>
@@ -67,7 +76,7 @@ const MyPage = () => {
                 <Card className='p-3'>
                     <Row>
                         <Col>
-                        <Image src={userInfo.profileImageUrl || defaultUserImg} width="95" height="95" />
+                            <Image src={userInfo.profileImageUrl || defaultUserImg} width="95" height="95" />
                         </Col>
                         <Col xs={9}>
                             <Row>
@@ -105,27 +114,27 @@ const MyPage = () => {
             <Row className='mt-3 mb-3'>
                 <Card className='p-3'>
                     <Tab.Container defaultActiveKey="home">
-                        <Nav  className='mb-3' variant="pills" id="myTab">
+                        <Nav className='mb-3' variant="pills" id="myTab">
                             <Nav.Item>
-                            <Nav.Link eventKey="home">내가 쓴 리뷰</Nav.Link>
+                                <Nav.Link eventKey="home">내가 쓴 리뷰</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                            <Nav.Link eventKey="profile">좋아요한 리뷰</Nav.Link>
+                                <Nav.Link eventKey="profile">좋아요한 리뷰</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                            <Nav.Link eventKey="contact">즐겨찾기한 전통주</Nav.Link>
+                                <Nav.Link eventKey="contact">즐겨찾기한 전통주</Nav.Link>
                             </Nav.Item>
                         </Nav>
 
                         <Tab.Content>
                             <Tab.Pane eventKey="home">
                                 {Array.from({ length: 5 }).map((_, index) => (
-                                <ReviewCardComponent key={index} authorship={true} />
+                                    <ReviewCardComponent key={index} authorship={true} />
                                 ))}
                             </Tab.Pane>
                             <Tab.Pane eventKey="profile">
                                 {Array.from({ length: 5 }).map((_, index) => (
-                                <ReviewCardComponent key={index} authorship={false} />
+                                    <ReviewCardComponent key={index} authorship={false} />
                                 ))}
                             </Tab.Pane>
                             <Tab.Pane eventKey="contact">
@@ -133,22 +142,22 @@ const MyPage = () => {
                                     <Col>
                                         <FavoritesCardComponent
                                             title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다."/>
+                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
                                     </Col>
                                     <Col>
                                         <FavoritesCardComponent
                                             title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다."/>
+                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
                                     </Col>
                                     <Col>
                                         <FavoritesCardComponent
                                             title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다."/>
+                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
                                     </Col>
                                     <Col>
                                         <FavoritesCardComponent
                                             title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다."/>
+                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
                                     </Col>
                                 </Row>
                             </Tab.Pane>
@@ -157,7 +166,7 @@ const MyPage = () => {
                 </Card>
             </Row>
         </Container>
-  );
+    );
 };
 
 export default MyPage;

@@ -15,16 +15,7 @@ import java.util.Collections;
 public class FileUploadController {
 
     private final S3Service s3Service;
-
-    // @PostMapping
-    // public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-    //     try {
-    //         String imageUrl = s3Service.uploadFile(file);
-    //         return ResponseEntity.ok(imageUrl); // S3 URL 반환
-    //     } catch (IOException e) {
-    //         return ResponseEntity.status(500).body("File upload failed");
-    //     }
-    // }
+    
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
