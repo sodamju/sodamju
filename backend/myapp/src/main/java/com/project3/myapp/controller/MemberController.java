@@ -1,13 +1,10 @@
 package com.project3.myapp.controller;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile; // 파일 업로드를 위한 MultipartFile 사용
 import com.project3.myapp.serviece.MemberService;
-import com.project3.myapp.serviece.S3Service;
 import com.project3.myapp.domain.Member;
 
 

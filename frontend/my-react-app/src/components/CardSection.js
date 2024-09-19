@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';  // useNavigate 훅을 사용하여 페이지 이동
 import './CardSection.css';
+import CategoryButtonComponent from './CategoryButtonComponent';
+import AlcoholCardComponent from './AlcoholCardComponent';
+
 
 function CardSection() {
   const [alcohols, setAlcohols] = useState([]);  // 데이터 상태 저장
@@ -34,47 +37,12 @@ function CardSection() {
   };
 
   return (
+    // 섹션영역
     <section className="card-section">
       <div className='card-sec'>
         <h5>카테고리별 랭킹</h5>
-
-        {/* 필터 버튼 영역 */}
-        <div className="card-filter">
-          <button className={`filter-btn ${category === '' ? 'active' : ''}`} onClick={() => handleCategoryClick('')}>
-            전체
-          </button>
-          <button className={`filter-btn ${category === '탁주' ? 'active' : ''}`} onClick={() => handleCategoryClick('탁주')}>
-            탁주
-          </button>
-          <button className={`filter-btn ${category === '증류주' ? 'active' : ''}`} onClick={() => handleCategoryClick('증류주')}>
-            증류주
-          </button>
-          <button className={`filter-btn ${category === '과실주' ? 'active' : ''}`} onClick={() => handleCategoryClick('과실주')}>
-            과실주
-          </button>
-          <button className={`filter-btn ${category === '청주' ? 'active' : ''}`} onClick={() => handleCategoryClick('청주')}>
-            청주
-          </button>
-          <button className={`filter-btn ${category === '리큐르/기타' ? 'active' : ''}`} onClick={() => handleCategoryClick('리큐르/기타')}>
-            리큐르/기타
-          </button>
-        </div>
-
-        {/* 카드 리스트 영역 */}
-        <div className="card-list">
-          {alcohols.map((alcohol) => (
-            <div className="card-style" key={alcohol.id}>
-              <div className="card-image-placeholder">
-                <img src={alcohol.thumUrl} alt={alcohol.title} /> {/* 이미지 매핑 */}
-              </div>
-              <div className="card-content">
-                <h3 className="card-title">{alcohol.title}</h3> {/* 제목 매핑 */}
-                <p className="card-body">{alcohol.description}</p> {/* 설명 매핑 */}
-                <button className="card-btn" onClick={() => handleDetailClick(alcohol.id)}>자세히 보기</button>
-              </div>
-            </div>
-          ))}
-        </div>
+        <CategoryButtonComponent category={category} onCategoryClick={handleCategoryClick} />
+        <AlcoholCardComponent alcohols={alcohols} onDetailClick={handleDetailClick} />
       </div>
     </section>
   );
