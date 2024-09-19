@@ -21,22 +21,27 @@ const Login = () => {
     setLoading(true);
     setError('');
 
-    const email = e.target.email.value;
+    const email = e.target.email.value; 
     const password = e.target.password.value;
 
     try {
-      // 서버에 로그인 요청
+      // 서버에 로그인 요청 (쿠키에 토큰을 저장하므로 응답 데이터를 따로 저장할 필요가 없음)
       const response = await axiosInstance.post('/members/login', { email, password });
-      
+
       if (response.status === 200) {
         console.log('Login successful:', response.data);
+        
+        // 로그인 성공 시, AuthContext의 login 함수를 호출하여 사용자 정보를 업데이트
         login(response.data);
-        navigate('/'); // 로그인 성공 후 리다이렉트
+        
+        // 로그인 성공 후 홈으로 리다이렉트
+        navigate('/');
       }
     } catch (err) {
       console.error('Login failed:', err);
       setError('로그인에 실패했습니다. 다시 시도해주세요.');
-      setLoading(false);
+    } finally {
+      setLoading(false); // 요청이 끝나면 로딩 상태를 false로 설정
     }
   };
 
@@ -58,3 +63,42 @@ const Login = () => {
 };
 
 export default Login;
+
+
+// const LoginComponent = () => {
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [error, setError] = useState('');
+//   const { login } = useAuth();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setError('');
+
+//     try {
+//       await login(email, password);
+//     } catch (err) {
+//       setError('로그인에 실패했습니다. 다시 시도해주세요.');
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h2>Login</h2>
+//       <form onSubmit={handleSubmit}>
+//         <div>
+//           <label>Email</label>
+//           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+//         </div>
+//         <div>
+//           <label>Password</label>
+//           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+//         </div>
+//         <button type="submit">Login</button>
+//       </form>
+//       {error && <p style={{ color: 'red' }}>{error}</p>}
+//     </div>
+//   );
+// };
+
+// export default LoginComponent;

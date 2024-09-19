@@ -9,14 +9,14 @@ import defaultUserImg from '../assets/images/user.png';
 import './MyPage.css';
 
 const MyPage = () => {
-    const { user } = useAuth();  // 로그인한 사용자 정보 (user.id 필요)
+    const { user } = useAuth();  
     const [userInfo, setUserInfo] = useState(null);  // 사용자 정보를 저장할 상태
     const [selectedFile, setSelectedFile] = useState(null); // 파일 선택 상태 추가
 
     // 사용자 정보 불러오기
     useEffect(() => {
         if (user && user.id) {
-            axiosInstance.get(`/members/${user.id}`)
+            axiosInstance.get(`/members/me`)
                 .then(response => {
                     setUserInfo(response.data);  // 사용자 정보 저장
                 })

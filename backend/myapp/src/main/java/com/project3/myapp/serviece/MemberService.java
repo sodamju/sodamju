@@ -32,6 +32,12 @@ public class MemberService {
         return memberRepository.findById(id).orElse(null);
     }
 
+    //로그인 토큰 생성
+    public String generateTokenForMember(Member member) {
+        // 간단한 토큰 생성 (이 예시에서는 사용자 ID와 시간 기반의 임의 토큰을 사용)
+        return member.getId() + "_" + System.currentTimeMillis();
+    }
+
     // 사용자 정보 수정
     public Member updateMember(String id, Member updatedMember) {
         Member existingMember = memberRepository.findById(id).orElse(null);
