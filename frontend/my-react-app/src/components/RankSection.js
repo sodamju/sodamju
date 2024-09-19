@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CategoryButtonComponent from './CategoryButtonComponent';
 import AlcoholCardComponent from './AlcoholCardComponent';
-import './CardSection.css';
+import './SearchSection.css';
 
 function RankSection() {
   const [alcohols, setAlcohols] = useState([]);

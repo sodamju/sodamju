@@ -28,4 +28,10 @@ public class AlcoholController {
     public Alcohol getAlcoholById(@PathVariable String id) {
         return alcoholService.getAlcoholById(id);  // ID로 제품 정보 반환
     }
+
+    // 검색 API: title을 기준으로 검색
+    @GetMapping("/search")
+    public List<Alcohol> searchAlcoholByTitle(@RequestParam("title") String title) {
+        return alcoholService.searchAlcoholByTitle(title);
+    }
 }

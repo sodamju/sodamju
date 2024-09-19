@@ -22,6 +22,12 @@ public class AlcoholService {
     public Alcohol getAlcoholById(String id) {
         return alcoholRepository.findById(id).orElse(null);  // ID로 제품 정보 가져오기
     }
+
+    // 제목을 기준으로 검색
+    public List<Alcohol> searchAlcoholByTitle(String title) {
+        String normalizedTitle = title.replaceAll("\\s+", "").toLowerCase();  // 공백 제거, 소문자로 변환
+        return alcoholRepository.findByTitleContainingIgnoreCase(normalizedTitle);
+    }
 }
 
 

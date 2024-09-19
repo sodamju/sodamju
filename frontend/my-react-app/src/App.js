@@ -28,7 +28,7 @@ function App() {
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/edit-member" element={<EditMember />} />
             <Route path="/review/:productId" element={<Review />}/>
-            <Route path="/ListPage" element={<ListPage />} />
+            <Route path="/search/:searchTerm" element={<ListPage />} />
             <Route path="/DetailPage/:productId" element={<DetailPage />} />
           </Routes>
         </Layout>
