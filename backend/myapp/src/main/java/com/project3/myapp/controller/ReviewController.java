@@ -48,7 +48,7 @@ public class ReviewController {
     // 리뷰 수정
     @PutMapping("/{id}")
     public ResponseEntity<Review> updateReview(@PathVariable String id, @RequestBody Review updatedReview) {
-        Optional<Review> reviewOpt = reviewService.findById(id); // reviewRepository 대신 reviewService 사용
+        Optional<Review> reviewOpt = reviewService.findById(id);
         if (!reviewOpt.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -57,8 +57,19 @@ public class ReviewController {
         review.setReviewText(updatedReview.getReviewText());
         review.setTipText(updatedReview.getTipText());
         review.setImages(updatedReview.getImages());
-        reviewService.saveReview(review); // reviewRepository.save() 대신 reviewService.saveReview() 호출
+        reviewService.saveReview(review); 
         return ResponseEntity.ok(review);
+    }
+
+    // 특정 리뷰를 ID로 가져오는 API
+    @GetMapping("/{id}")
+    public ResponseEntity<Review> getReviewById(@PathVariable String id) {
+        Optional<Review> reviewOpt = reviewService.findById(id);
+        if (reviewOpt.isPresent()) {
+            return ResponseEntity.ok(reviewOpt.get());  // 리뷰가 있으면 반환
+        } else {
+            return ResponseEntity.notFound().build();  // 없으면 404 반환
+        }
     }
 
 }
