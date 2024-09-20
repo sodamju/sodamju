@@ -7,22 +7,6 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  // const login = async (email, password) => {
-  //   try {
-  //     const response = await axios.post(
-  //       '/api/members/login',
-  //       { email, password },  // 단순 JSON 객체로 email, password 전달
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',  // 요청이 JSON 형식임을 명시
-  //         },
-  //       }
-  //     );
-  //     setUser(response.data);  // 로그인된 사용자 정보를 상태에 저장
-  //   } catch (err) {
-  //     console.error("Login failed", err);
-  //   }
-  // };
   // 로그인 함수
   const login = (userData) => {
     console.log("Received user data:", userData);
@@ -50,8 +34,11 @@ export const AuthProvider = ({ children }) => {
     fetchUser();  // 컴포넌트가 처음 렌더링될 때 사용자 정보를 가져옴
   }, []);
 
+  // 로그인 여부를 판단하는 상태
+  const isAuthenticated = !!user;
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user,isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

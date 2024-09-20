@@ -70,20 +70,6 @@ public class MemberController {
         return ResponseEntity.status(401).body(null);  // 인증 실패 시 401
     }
 
-    // @GetMapping("/me")
-    // public ResponseEntity<Member> getMyInfo(@CookieValue(value = "auth_token", defaultValue = "") String token) {
-    //     if (!token.isEmpty()) {
-    //         // 쿠키에서 받은 토큰으로 사용자 정보 조회
-    //         String memberId = token.split("_")[0];  // 간단하게 토큰에서 ID 추출 (실제 구현에 맞게 수정)
-    //         Member member = memberService.getMemberById(memberId);
-
-    //         if (member != null) {
-    //             return ResponseEntity.ok(member);
-    //         }
-    //     }
-    //     return ResponseEntity.status(401).body(null);  // 인증 실패 시 401
-    // }
-
     // 로그아웃 엔드포인트
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
