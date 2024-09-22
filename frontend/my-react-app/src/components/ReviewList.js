@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './ReviewList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';  // 페이지 이동을 위해 사용
+import { Badge } from 'react-bootstrap';
 
 function ReviewList({ productId }) {
     const [reviews, setReviews] = useState([]);
@@ -19,6 +20,7 @@ function ReviewList({ productId }) {
                     throw new Error('리뷰 데이터를 가져오지 못했습니다.');
                 }
                 const data = await response.json();
+                console.log("Fetched Reviews:", data); // 데이터를 로그로 출력
                 setReviews(data);
             } catch (error) {
                 console.error('Error fetching reviews:', error);
@@ -74,12 +76,15 @@ function ReviewList({ productId }) {
                     <div className="review-item" key={review.id}>
                         <div className="review-header">
                             <div className='user-icon'>
-                                <img className="avatar" src={user.profileImageUrl} />
+                                <img className="avatar" src={review.profileImageUrl || "default-profile-url.jpg"} alt='profileImage'/>
                             </div>
                             <div className="review-info">
-                                <h4>{user.nickname || "익명 사용자"}</h4> {/* 유저 이름이 있다면 표시, 없으면 "익명 사용자" */}
-                                <span className="review-date">{formatDate(review.createdAt)}</span>  {/* 날짜 포맷 */}
-                                <span className="review-rating">{"★".repeat(review.rating)}</span> {/* 별점 표시 */}
+                                <h4>{review.nickname || "익명 사용자"}
+                                    <Badge bg="secondary">{review.ageGroup}대</Badge>
+                                    <Badge bg="secondary">lv.{review.level}</Badge>
+                                </h4>
+                                <span className="review-date">{formatDate(review.review.createdAt)}</span>  {/* 날짜 포맷 */}
+                                <span className="review-rating">{"★".repeat(review.review.rating)}</span> {/* 별점 표시 */}
                             </div>
                             {user && user.id === review.userId && (
                                 <div className="review-actions">
@@ -96,11 +101,11 @@ function ReviewList({ productId }) {
                                 </div>
                             )}
                         </div>
-                        <p>{review.reviewText}</p>  {/* 리뷰 내용 */}
-                        {review.tipText && <p><strong>Tip:</strong> {review.tipText}</p>}  {/* 꿀팁 내용 (있을 경우에만) */}
-                        {review.images && review.images.length > 0 && (
+                        <p>{review.review.reviewText}</p>  {/* 리뷰 내용 */}
+                        {review.review.tipText && <p><strong>Tip:</strong> {review.review.tipText}</p>}  {/* 꿀팁 내용 (있을 경우에만) */}
+                        {review.review.images && review.review.images.length > 0 && (
                             <div className="review-images">
-                                {review.images.map((imageUrl, index) => (
+                                {review.review.images.map((imageUrl, index) => (
                                     <img key={index} src={imageUrl} alt={`리뷰 이미지 ${index + 1}`} className="review-image" />
                                 ))}
                             </div>

@@ -5,7 +5,7 @@ import ReviewCardComponent from '../components/ReviewCardComponent';
 import FavoritesCardComponent from '../components/FavoritesCardComponent';
 import { useAuth } from '../contexts/AuthContext';  // 로그인한 사용자 정보 사용
 import axiosInstance from '../api/myApi'; // Axios 인스턴스
-import defaultUserImg from '../assets/images/User.png';
+import defaultUserImg from '../assets/images/user.png';
 import './MyPage.css';
 
 const MyPage = () => {

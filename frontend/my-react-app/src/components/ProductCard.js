@@ -3,10 +3,8 @@ import './ProductCard.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import { useAuth } from '../contexts/AuthContext';
 
-const ProductCard = ({ product }) => {
-  const { isAuthenticated, user } = useAuth();  // 로그인 여부와 사용자 정보 가져오기
+const ProductCard = ({ product, isAuthenticated, user }) => {
   const [liked, setLiked] = useState(false);    // 좋아요 여부 상태
   const [likeCount, setLikeCount] = useState(0); // 좋아요 수 상태
 

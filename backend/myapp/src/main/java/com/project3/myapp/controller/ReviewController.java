@@ -1,13 +1,19 @@
 package com.project3.myapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import com.project3.myapp.domain.Member;
 import com.project3.myapp.domain.Review;
+import com.project3.myapp.dto.ReviewWithUserDetails;
+import com.project3.myapp.serviece.MemberService;
 import com.project3.myapp.serviece.ReviewService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -16,6 +22,10 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private MemberService memberService;
+
+
     // 리뷰 생성
     @PostMapping
     public Review createReview(@RequestBody Review review) {
@@ -23,10 +33,31 @@ public class ReviewController {
     }
 
     // 특정 productId에 해당하는 리뷰 목록 반환
+    // @GetMapping
+    // public List<Review> getReviewsByProductId(@RequestParam String productId) {
+    //     return reviewService.getReviewsByProductId(productId);
+    // }
+
     @GetMapping
-    public List<Review> getReviewsByProductId(@RequestParam String productId) {
-        return reviewService.getReviewsByProductId(productId);
+    public List<ReviewWithUserDetails> getReviewsWithUserDetails(@RequestParam String productId) {
+        List<Review> reviews = reviewService.getReviewsByProductId(productId);
+        List<ReviewWithUserDetails> result = new ArrayList<>();
+
+        // for (Review review : reviews) {
+        //     Member member = memberService.getMemberById(review.getUserId());
+        //     result.add(new ReviewWithUserDetails(review, member));
+        // }
+        for (Review review : reviews) {
+            Member member = memberService.getMemberById(review.getUserId());
+            if (member == null) {
+                member = new Member("익명 사용자", "", "익명 사용자", "", "", "default-profile-url.jpg");
+            }
+            result.add(new ReviewWithUserDetails(review, member));
+        }
+
+        return result;
     }
+
 
     // 리뷰 삭제
     @DeleteMapping("/{id}")
