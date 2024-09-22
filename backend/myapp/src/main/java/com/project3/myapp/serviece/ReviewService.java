@@ -16,6 +16,10 @@ public class ReviewService {
     public List<Review> getReviewsByProductId(String productId) {
         return reviewRepository.findByProductId(productId);
     }
+    // 특정 userId에 해당하는 리뷰 조회
+    public List<Review> getReviewsByUserId(String userId) {
+        return reviewRepository.findByUserId(userId);
+    }
 
     // 리뷰 저장
     public Review saveReview(Review review) {

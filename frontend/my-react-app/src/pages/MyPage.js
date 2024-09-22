@@ -12,6 +12,8 @@ const MyPage = () => {
     const { user } = useAuth();  
     const [userInfo, setUserInfo] = useState(null);  // 사용자 정보를 저장할 상태
     const [selectedFile, setSelectedFile] = useState(null); // 파일 선택 상태 추가
+    const [reviews, setReviews] = useState([]);  // 사용자가 쓴 리뷰 목록
+
     
 
     // 사용자 정보 불러오기
@@ -23,6 +25,15 @@ const MyPage = () => {
                 })
                 .catch(error => {
                     console.error('Error fetching user info:', error);
+                });
+            
+            // 내가 쓴 리뷰 가져오기
+            axiosInstance.get(`/reviews/user-reviews?userId=${user.id}`)
+                .then(response => {
+                    setReviews(response.data);  // 리뷰 목록 저장
+                })
+                .catch(error => {
+                    console.error('Error fetching user reviews:', error);
                 });
         }
     }, [user]);
@@ -114,31 +125,25 @@ const MyPage = () => {
             <Row className='mt-3 mb-3'><h3>내 활동</h3></Row>
             <Row className='mt-3 mb-3'>
                 <Card className='p-3'>
-                    <Tab.Container defaultActiveKey="home">
+                    <Tab.Container defaultActiveKey="myReviews">
                         <Nav className='mb-3' variant="pills" id="myTab">
                             <Nav.Item>
-                                <Nav.Link eventKey="home">내가 쓴 리뷰</Nav.Link>
+                                <Nav.Link eventKey="myReviews">내가 쓴 리뷰</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="profile">좋아요한 리뷰</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey="contact">즐겨찾기한 전통주</Nav.Link>
+                                <Nav.Link eventKey="myAlcohols">즐겨찾기한 전통주</Nav.Link>
                             </Nav.Item>
                         </Nav>
 
                         <Tab.Content>
-                            <Tab.Pane eventKey="home">
-                                {Array.from({ length: 5 }).map((_, index) => (
-                                    <ReviewCardComponent key={index} authorship={true} />
-                                ))}
+                            <Tab.Pane eventKey="myReviews">
+                                <Row>
+                                    {reviews.map(review => (
+                                        <ReviewCardComponent key={review.id} review={review} />
+                                    ))}
+                                </Row>
                             </Tab.Pane>
-                            <Tab.Pane eventKey="profile">
-                                {Array.from({ length: 5 }).map((_, index) => (
-                                    <ReviewCardComponent key={index} authorship={false} />
-                                ))}
-                            </Tab.Pane>
-                            <Tab.Pane eventKey="contact">
+                            <Tab.Pane eventKey="myAlcohols">
                                 <Row>
                                     <Col>
                                         <FavoritesCardComponent

@@ -1,25 +1,46 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import './ReviewCardComponent.css'
+import { useNavigate } from 'react-router-dom';
 
-const ReviewCardComponent = ({ authorship }) => (
+
+const ReviewCardComponent = ({ review }) => {
+  const navigate = useNavigate();
+
+  // 날짜 포맷 변환 함수 (년/월/일 형식)
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
+  };
+
+  const handleTitleClick = () => {
+    navigate(`/DetailPage/${review.review.productId}`);
+  };
+
+  return (
     <Card className='reviewCard'>
       <Card.Body>
-        <Card.Title>글제목</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">글쓴이</Card.Subtitle>
+         <Card.Title onClick={handleTitleClick} style={{ cursor: 'pointer'}} >{review.title}</Card.Title>
         <Card.Text>
-          리뷰내용 미리보기 입니다.
+          <div className="review-header">
+            <span className="review-date">{formatDate(review.review.createdAt)}</span>  {/* 날짜 포맷 */}
+            <span className="review-rating">{"★".repeat(review.review.rating)}</span> {/* 별점 표시 */}
+          </div>
+          <p>{review.review.reviewText}</p>  {/* 리뷰 내용 */}
+          {review.review.tipText && <p><strong>Tip:</strong> {review.review.tipText}</p>}  {/* 꿀팁 내용 (있을 경우에만) */}
+          {review.review.images && review.review.images.length > 0 && (
+              <div className="review-images">
+                  {review.review.images.map((imageUrl, index) => (
+                      <img key={index} src={imageUrl} alt={`리뷰 이미지 ${index + 1}`} className="review-image" />
+                  ))}
+              </div>
+          )}
         </Card.Text>
-        {authorship ? (
-            <>
-                <Card.Link href="#">수정</Card.Link>
-                <Card.Link href="#">삭제</Card.Link>
-            </>
-            ) : (
-                <Card.Link href="#">좋아요취소</Card.Link>
-        )}
+          <Card.Link href="#">수정</Card.Link>
+          <Card.Link href="#">삭제</Card.Link>
       </Card.Body>
     </Card>
   );
-  
-  export default ReviewCardComponent;
+};
+
+export default ReviewCardComponent;
