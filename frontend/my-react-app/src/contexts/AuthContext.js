@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   // 로그인 함수
   const login = (userData) => {
-    console.log("Received user data:", userData);
+    console.log("유저 데이터 : ", userData);
     setUser(userData);
     // 유저 데이터를 로컬 스토리지에 저장할 수도 있음
     localStorage.setItem('user', JSON.stringify(userData));

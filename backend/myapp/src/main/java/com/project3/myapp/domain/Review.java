@@ -11,6 +11,7 @@ public class Review {
     @Id
     private String id;
     private String productId;
+    private String userId;  // 사용자 ID를 추가
     private int rating;
     private String reviewText;
     private String tipText;
@@ -20,8 +21,9 @@ public class Review {
     // 생성자, getter 및 setter
     public Review() {}
 
-    public Review(String productId, int rating, String reviewText, String tipText, List<String> images, Date createdAt) {
+    public Review(String productId, String userId, int rating, String reviewText, String tipText, List<String> images, Date createdAt) {
         this.productId = productId;
+        this.userId = userId;
         this.rating = rating;
         this.reviewText = reviewText;
         this.tipText = tipText;
@@ -43,6 +45,14 @@ public class Review {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public int getRating() {

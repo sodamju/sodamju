@@ -2,18 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'; 
 import { Image, Button, Form, Card, Container, Row, Col } from 'react-bootstrap';
 import StarComponent from '../components/StarComponent';
+import { useAuth } from '../contexts/AuthContext';
 import './Review.css';
 
-const Review = () => {
-    const { productId } = useParams();  
-    const [product, setProduct] = useState(null);  
+const Review = ({ isEditing }) => {  // isEditing prop을 통해 작성 또는 수정 여부를 구분
+    const { productId, reviewId } = useParams();  // URL에서 productId 및 reviewId 파라미터를 가져옴
+    const { user } = useAuth();
+    const [product, setProduct] = useState(null);
     const [rating, setRating] = useState(0);
     const [reviewText, setReviewText] = useState('');
     const [tipText, setTipText] = useState('');
-    const [selectedImages, setSelectedImages] = useState([]); // AWS S3 URL이 저장될 상태
+    const [selectedImages, setSelectedImages] = useState([]);
     const [formErrors, setFormErrors] = useState({});  // 폼 에러 상태
+    
+    const navigate = useNavigate();
 
-    // 제품 정보를 가져오는 함수
+    // 제품 정보 가져오기
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
@@ -22,15 +26,38 @@ const Review = () => {
                     throw new Error('제품 정보를 불러오지 못했습니다.');
                 }
                 const data = await response.json();
-                setProduct(data); 
+                setProduct(data);
             } catch (error) {
                 console.error('Error fetching product details:', error);
             }
         };
-
         fetchProductDetails();
     }, [productId]);
 
+
+    // 수정하는 경우, 기존 리뷰 데이터를 가져오기
+    useEffect(() => {
+        if (isEditing && reviewId) {
+            const fetchReviewDetails = async () => {
+                try {
+                    const response = await fetch(`http://localhost:8080/api/reviews/${reviewId}`);
+                    const data = await response.json();
+                    if (response.ok) {
+                        setRating(data.rating);
+                        setReviewText(data.reviewText);
+                        setTipText(data.tipText);
+                        setSelectedImages(data.images || []);
+                    } else {
+                        throw new Error('Failed to fetch review details');
+                    }
+                } catch (error) {
+                    console.error('Error fetching review details:', error);
+                }
+            };
+            fetchReviewDetails();
+        }
+    }, [reviewId, isEditing]);
+    
     // 리뷰 제출 전에 폼 검증
     const validateForm = () => {
         const errors = {};
@@ -67,6 +94,7 @@ const Review = () => {
 
     // 사진을 선택하고 S3에 업로드한 후 상태에 저장
     const handleImageChange = async (e) => {
+
         const files = Array.from(e.target.files);
         const uploadedImageUrls = await Promise.all(files.map(async (file) => {
             return await uploadImageToS3(file); // S3에 업로드
@@ -80,46 +108,44 @@ const Review = () => {
         setSelectedImages(selectedImages.filter((_, index) => index !== indexToRemove));
     };
 
-    // 제출 버튼
-    const navigate = useNavigate();
+    // 제출 버튼 처리 (작성/수정)
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!validateForm()) {
+    e.preventDefault();
+     if (!validateForm()) {
             return;  // 폼 검증에 실패하면 제출 중단
         }
-        const reviewData = {
-            productId,  
-            rating,
-            reviewText,
-            tipText,
-            images: selectedImages, // S3에 저장된 이미지 URL들을 보냄
-            createdAt: new Date().toISOString()
-        };
-
-        try {
-            const response = await fetch('http://localhost:8080/api/reviews', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(reviewData),
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                console.log('리뷰가 성공적으로 저장되었습니다:', result);
-                navigate(`/DetailPage/${productId}`);
-            } else {
-                console.error('리뷰 저장에 실패했습니다.');
-            }
-        } catch (error) {
-            console.error('리뷰 전송 중 오류가 발생했습니다:', error);
-        }
+    const reviewData = {
+        productId,
+        userId: user?.id,
+        rating,
+        reviewText,
+        tipText,
+        images: selectedImages,
+        createdAt: new Date().toISOString(),
     };
+
+    const url = isEditing ? `http://localhost:8080/api/reviews/${reviewId}` : 'http://localhost:8080/api/reviews';
+    const method = isEditing ? 'PUT' : 'POST';
+
+    try {
+        const response = await fetch(url, {
+            method: method,
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(reviewData),
+        });
+        if (response.ok) {
+            navigate(`/DetailPage/${productId}`);  // 성공 시 상세 페이지로 리다이렉트
+        } else {
+            throw new Error('Failed to submit review');
+        }
+    } catch (error) {
+        console.error('Error submitting review:', error);
+    }
+};
 
     return (
         <Container>
-            <Row className='mt-3 mb-3'><h1>리뷰 쓰기</h1></Row>
+            <Row className='mt-3 mb-3'><h1>{isEditing ? '리뷰 수정' : '리뷰 쓰기'}</h1></Row>
             {product && (
                 <Row className='mt-3 mb-3'>
                     <Card className='p-3'>

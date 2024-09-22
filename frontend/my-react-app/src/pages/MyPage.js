@@ -5,13 +5,14 @@ import ReviewCardComponent from '../components/ReviewCardComponent';
 import FavoritesCardComponent from '../components/FavoritesCardComponent';
 import { useAuth } from '../contexts/AuthContext';  // 로그인한 사용자 정보 사용
 import axiosInstance from '../api/myApi'; // Axios 인스턴스
-import defaultUserImg from '../assets/images/user.png';
+import defaultUserImg from '../assets/images/User.png';
 import './MyPage.css';
 
 const MyPage = () => {
     const { user } = useAuth();  
     const [userInfo, setUserInfo] = useState(null);  // 사용자 정보를 저장할 상태
     const [selectedFile, setSelectedFile] = useState(null); // 파일 선택 상태 추가
+    
 
     // 사용자 정보 불러오기
     useEffect(() => {
