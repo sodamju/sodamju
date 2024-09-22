@@ -3,10 +3,12 @@ package com.project3.myapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.project3.myapp.domain.Alcohol;
 import com.project3.myapp.service.LikeService;
-
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/likes")
@@ -48,4 +50,13 @@ public class LikesController {
         likeService.removeLike(alcoholId, memberId);
         return ResponseEntity.ok().build();
     }
+
+    // 특정 사용자가 좋아요한 전통주 목록(마이페이지)
+    @GetMapping("/list")
+    public List<Alcohol> getMemberAlcohols(@RequestParam String memberId) {
+        return likeService.getMemberLikedAlcohols(memberId);
+    }
+    
+
+
 }

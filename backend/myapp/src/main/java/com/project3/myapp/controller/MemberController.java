@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.project3.myapp.serviece.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import com.project3.myapp.domain.Member;
+import com.project3.myapp.service.MemberService;
 import jakarta.servlet.http.Cookie;
 
 

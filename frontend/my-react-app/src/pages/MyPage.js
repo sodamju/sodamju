@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Nav, Tab, Stack, Badge, Image, Card, Container, Row, Col, Form, Button } from 'react-bootstrap';
 import ReviewCardComponent from '../components/ReviewCardComponent';
-import FavoritesCardComponent from '../components/FavoritesCardComponent';
+import AlcoholCardComponent from '../components/AlcoholCardComponent';
 import { useAuth } from '../contexts/AuthContext';  // 로그인한 사용자 정보 사용
 import axiosInstance from '../api/myApi'; // Axios 인스턴스
 import defaultUserImg from '../assets/images/user.png';
@@ -13,8 +13,9 @@ const MyPage = () => {
     const [userInfo, setUserInfo] = useState(null);  // 사용자 정보를 저장할 상태
     const [selectedFile, setSelectedFile] = useState(null); // 파일 선택 상태 추가
     const [reviews, setReviews] = useState([]);  // 사용자가 쓴 리뷰 목록
+    const [alcohols, setAlcohols] = useState([]) // 사용자가 좋아요한 전통주
+    const navigate = useNavigate();
 
-    
 
     // 사용자 정보 불러오기
     useEffect(() => {
@@ -35,8 +36,22 @@ const MyPage = () => {
                 .catch(error => {
                     console.error('Error fetching user reviews:', error);
                 });
+
+            // 좋아요한 전통주 가져오기
+            axiosInstance.get(`/likes/list?memberId=${user.id}`)
+                .then(response => {
+                    setAlcohols(response.data);  // 리뷰 목록 저장
+                })
+                .catch(error => {
+                    console.error('Error fetching user reviews:', error);
+                });
         }
     }, [user]);
+
+    // detail page navigate
+    const handleDetailClick = (id) => {
+        navigate(`/DetailPage/${id}`);
+      };
 
     // 파일 선택 처리
     const handleFileChange = (e) => {
@@ -131,7 +146,7 @@ const MyPage = () => {
                                 <Nav.Link eventKey="myReviews">내가 쓴 리뷰</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="myAlcohols">즐겨찾기한 전통주</Nav.Link>
+                                <Nav.Link eventKey="myAlcohols">좋아요한 전통주</Nav.Link>
                             </Nav.Item>
                         </Nav>
 
@@ -139,32 +154,13 @@ const MyPage = () => {
                             <Tab.Pane eventKey="myReviews">
                                 <Row>
                                     {reviews.map(review => (
-                                        <ReviewCardComponent key={review.id} review={review} />
+                                        <ReviewCardComponent key={review.id} review={review} onDetailClick={handleDetailClick} />
                                     ))}
                                 </Row>
                             </Tab.Pane>
                             <Tab.Pane eventKey="myAlcohols">
                                 <Row>
-                                    <Col>
-                                        <FavoritesCardComponent
-                                            title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
-                                    </Col>
-                                    <Col>
-                                        <FavoritesCardComponent
-                                            title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
-                                    </Col>
-                                    <Col>
-                                        <FavoritesCardComponent
-                                            title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
-                                    </Col>
-                                    <Col>
-                                        <FavoritesCardComponent
-                                            title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
-                                    </Col>
+                                    <AlcoholCardComponent alcohols={alcohols} onDetailClick={handleDetailClick} />
                                 </Row>
                             </Tab.Pane>
                         </Tab.Content>

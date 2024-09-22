@@ -1,16 +1,14 @@
 package com.project3.myapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import com.project3.myapp.domain.Alcohol;
 import com.project3.myapp.domain.Member;
 import com.project3.myapp.domain.Review;
 import com.project3.myapp.dto.ReviewWithAlcohols;
 import com.project3.myapp.dto.ReviewWithUserDetails;
-import com.project3.myapp.serviece.AlcoholService;
-import com.project3.myapp.serviece.MemberService;
-import com.project3.myapp.serviece.ReviewService;
-
+import com.project3.myapp.service.AlcoholService;
+import com.project3.myapp.service.MemberService;
+import com.project3.myapp.service.ReviewService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

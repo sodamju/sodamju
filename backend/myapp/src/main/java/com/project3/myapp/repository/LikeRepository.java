@@ -1,5 +1,7 @@
 package com.project3.myapp.repository;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import com.project3.myapp.domain.Like;
 
@@ -12,4 +14,7 @@ public interface LikeRepository extends MongoRepository<Like, String> {
 
     // 주류 ID를 기준으로 좋아요 수를 계산하는 메서드
     long countByAlcoholId(String alcoholId);
+
+    // 특정 사용자의 좋아요 목록을 반환
+    List<Like> findByMemberId(String memberId);
 }

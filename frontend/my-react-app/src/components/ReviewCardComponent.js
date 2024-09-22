@@ -1,11 +1,9 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import './ReviewCardComponent.css'
-import { useNavigate } from 'react-router-dom';
 
 
-const ReviewCardComponent = ({ review }) => {
-  const navigate = useNavigate();
+const ReviewCardComponent = ({ review, onDetailClick }) => {
 
   // 날짜 포맷 변환 함수 (년/월/일 형식)
   const formatDate = (dateString) => {
@@ -13,14 +11,10 @@ const ReviewCardComponent = ({ review }) => {
     return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
   };
 
-  const handleTitleClick = () => {
-    navigate(`/DetailPage/${review.review.productId}`);
-  };
-
   return (
     <Card className='reviewCard'>
       <Card.Body>
-         <Card.Title onClick={handleTitleClick} style={{ cursor: 'pointer'}} >{review.title}</Card.Title>
+         <Card.Title onClick={() =>onDetailClick(review.review.productId)} style={{ cursor: 'pointer'}} >{review.title}</Card.Title>
         <Card.Text>
           <div className="review-header">
             <span className="review-date">{formatDate(review.review.createdAt)}</span>  {/* 날짜 포맷 */}

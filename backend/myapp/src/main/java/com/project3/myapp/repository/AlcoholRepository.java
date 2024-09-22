@@ -6,4 +6,5 @@ import java.util.List;
 public interface AlcoholRepository extends MongoRepository<Alcohol, String> {
     List<Alcohol> findByCategory(String category);  // 카테고리로 필터링된 데이터 가져오기
     List<Alcohol> findByTitleContainingIgnoreCase(String title); //title로 검색된 데이터 가져오기
+    List<Alcohol> findByIdIn(List<String> alcoholIds); // 여러 alcoholId로 전통주 목록을 반환(좋아요리스트)
 }
