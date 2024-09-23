@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Nav, Tab, Stack, Badge, Image, Card, Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
+import { Nav, Tab, Stack, Badge, Image, Card, Container, Row, Col, Form, Button, Modal, Alert } from 'react-bootstrap';
 import ReviewCardComponent from '../components/ReviewCardComponent';
 import AlcoholCardComponent from '../components/AlcoholCardComponent';
 import { useAuth } from '../contexts/AuthContext';  // 로그인한 사용자 정보 사용
@@ -13,19 +13,17 @@ const MyPage = () => {
     const { user } = useAuth();  
     const [userInfo, setUserInfo] = useState(null);  // 사용자 정보를 저장할 상태
     const [selectedFile, setSelectedFile] = useState(null); // 파일 선택 상태 추가
+    const [showModal, setShowModal] = useState(false);  // 모달 표시 상태
+    const [uploadError, setUploadError] = useState('');
     const [reviews, setReviews] = useState([]);  // 사용자가 쓴 리뷰 목록
     const [alcohols, setAlcohols] = useState([]) // 사용자가 좋아요한 전통주
     const navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);  // 모달 표시 상태
-    const [uploadError, setUploadError] = useState('');
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => {
         setShowModal(false);
         setUploadError('');  // 모달을 닫을 때 에러 메시지 초기화
     };
-    
-
 
     // 사용자 정보 불러오기
     useEffect(() => {
@@ -163,9 +161,10 @@ const MyPage = () => {
 
             {/* 활동 상세 */}
             <Row className='mt-3 mb-3'><h3>내 활동</h3></Row>
-            <Row className='mt-3 mb-3'>
-                <Card className='p-3 color-box'>
-                    <Tab.Container defaultActiveKey="myReviews">
+            <Row className='mt-3 mb-3 padding-box'>
+
+                <Card className='reviewList'>
+                    <Tab.Container defaultActiveKey="myReviews" >
                         <Nav className='mb-3' variant="pills" id="myTab">
                             <Nav.Item>
                                 <Nav.Link eventKey="myReviews">내가 쓴 리뷰</Nav.Link>
@@ -179,7 +178,12 @@ const MyPage = () => {
                             <Tab.Pane eventKey="myReviews">
                                 <Row>
                                     {reviews.map(review => (
-                                        <ReviewCardComponent key={review.id} review={review} onDetailClick={handleDetailClick} />
+                                        <ReviewCardComponent 
+                                            key={review.id} 
+                                            review={review} 
+                                            onDetailClick={handleDetailClick}
+                                            setReviews={setReviews}  reviews={reviews} // reviews상태 변화를 위한 setReviews,reviews 하위 컴포넌트에 전달
+                                            />
                                     ))}
                                 </Row>
                             </Tab.Pane>

@@ -74,7 +74,7 @@ function SearchSection() {
 
         <CategoryButtonComponent category={category} onCategoryClick={handleCategoryClick} />
         {/* 정렬 옵션 선택 버튼 */}
-        <div className="sort-buttons">
+        <div className="card-filter">
           <button className={`sort-btn ${sortOption === 'likes' ? 'active' : ''}`} onClick={() => setSortOption('likes')}>좋아요 순</button>
           <button className={`sort-btn ${sortOption === 'reviews' ? 'active' : ''}`} onClick={() => setSortOption('reviews')}>리뷰 순</button>
         </div>

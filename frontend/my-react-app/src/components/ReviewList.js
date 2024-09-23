@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ReviewList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Badge, Modal, Button, Image } from 'react-bootstrap';
-import { faEdit,  faTimesCircle, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle, faEdit, faTimesCircle , faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';  // 페이지 이동을 위해 사용
 
@@ -16,23 +16,25 @@ function ReviewList({ alcoholId, onReviewClick }) {
 
 
     // 리뷰 데이터를 가져오는 함수
-    useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/api/reviews?alcoholId=${alcoholId}`);
-                if (!response.ok) {
-                    throw new Error('리뷰 데이터를 가져오지 못했습니다.');
-                }
-                const data = await response.json();
-                console.log("Fetched Reviews:", data); // 데이터를 로그로 출력
-                setReviews(data);
-            } catch (error) {
-                console.error('Error fetching reviews:', error);
+    const fetchReviews = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/api/reviews?alcoholId=${alcoholId}`);
+            if (!response.ok) {
+                throw new Error('리뷰 데이터를 가져오지 못했습니다.');
             }
-        };
+            const data = await response.json();
+            console.log("Fetched Reviews:", data); // 데이터를 로그로 출력
+            setReviews(data);
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+        }
+    };
 
+    useEffect(() => {
         fetchReviews();
     }, [alcoholId]);
+
+    
 
     // 리뷰 삭제 함수
     const handleDelete = async (reviewId) => {
@@ -50,6 +52,7 @@ function ReviewList({ alcoholId, onReviewClick }) {
                     // 리뷰 삭제 후, 화면에서 해당 리뷰를 제거
                     setReviews(reviews.filter(review => review.id !== reviewId));
                     alert('리뷰가 성공적으로 삭제되었습니다.');
+                    fetchReviews();
                 } else {
                     alert('리뷰 삭제에 실패했습니다.');
                 }
@@ -119,23 +122,23 @@ function ReviewList({ alcoholId, onReviewClick }) {
                                 <span className="review-date">{formatDate(review.review.createdAt)}</span>  {/* 날짜 포맷 */}
                                 <span className="review-rating">{"★".repeat(review.review.rating)}</span> {/* 별점 표시 */}
                             </div>
-                            {user && user.id === review.userId && (
+                            {user && user.id === review.review.userId && (
                                 <div className="review-actions">
                                     <FontAwesomeIcon
                                         icon={faEdit}
-                                        onClick={() => handleEdit(review.id)}
+                                        onClick={() => handleEdit(review.review.id)}
                                         className="action-icon"
                                     />
                                     <FontAwesomeIcon
                                         icon={faTimesCircle}
-                                        onClick={() => handleDelete(review.id)}
+                                        onClick={() => handleDelete(review.review.id)}
                                         className="action-icon"
                                     />
                                 </div>
                             )}
                         </div>
                         <p>{review.review.reviewText}</p>  {/* 리뷰 내용 */}
-                        {review.review.tipText && <p><strong>Tip:</strong> {review.review.tipText}</p>}  {/* 꿀팁 내용 (있을 경우에만) */}
+                        {review.review.tipText && <p className='tips'><FontAwesomeIcon className='lightBulb' icon={faCheckCircle}/> <strong>꿀팁!</strong><br/>{review.review.tipText}</p>}  {/* 꿀팁 내용 (있을 경우에만) */}
                         {review.review.images && review.review.images.length > 0 && (
                             <div className="review-images">
                                 {review.review.images.map((imageUrl, index) => (

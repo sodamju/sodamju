@@ -8,9 +8,9 @@ function InfoCard() {
     <div className='info-container'>
         <div className="info-card">
             <div className='info-title'>
-            <FontAwesomeIcon icon={faInfoCircle} /> Info Title
+            <FontAwesomeIcon icon={faInfoCircle} /> Info
             </div>
-            <p>상품에 대한 추가적인 설명이 들어가는 부분입니다.</p>
+            <p>본 사이트에 게시된 전통주 이미지는 실제 상품과 다를 수 있으며, 커뮤니티 이용 시 예의를 지켜주시기 바랍니다.</p>
         </div>
     </div>
   );

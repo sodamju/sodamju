@@ -65,6 +65,11 @@
     padding-top: 20px;
     margin-top: auto;
   }
+
+  .likeButton {
+    background-color: white;
+    border: none;
+  }
   
   .likes span {
     cursor: pointer;
