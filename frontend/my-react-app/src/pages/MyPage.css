@@ -43,3 +43,9 @@ h3 {
 .color-box {
     background-color: #F3E0D6;
 }
+
+.reviewList {
+    background-color: #F3E0D6; /* 전통 한지 색상 */
+    padding: 40px;
+    border-radius: 20px;
+}

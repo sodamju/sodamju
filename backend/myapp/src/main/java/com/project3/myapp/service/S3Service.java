@@ -1,4 +1,4 @@
-package com.project3.myapp.serviece;
+package com.project3.myapp.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;

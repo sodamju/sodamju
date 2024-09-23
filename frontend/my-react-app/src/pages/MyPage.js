@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Nav, Tab, Stack, Badge, Image, Card, Container, Row, Col, Form, Button, Modal, Alert } from 'react-bootstrap';
 import ReviewCardComponent from '../components/ReviewCardComponent';
-import FavoritesCardComponent from '../components/FavoritesCardComponent';
+import AlcoholCardComponent from '../components/AlcoholCardComponent';
 import { useAuth } from '../contexts/AuthContext';  // 로그인한 사용자 정보 사용
 import axiosInstance from '../api/myApi'; // Axios 인스턴스
 import { IoCamera } from 'react-icons/io5';  // 카메라 아이콘
@@ -15,13 +15,15 @@ const MyPage = () => {
     const [selectedFile, setSelectedFile] = useState(null); // 파일 선택 상태 추가
     const [showModal, setShowModal] = useState(false);  // 모달 표시 상태
     const [uploadError, setUploadError] = useState('');
+    const [reviews, setReviews] = useState([]);  // 사용자가 쓴 리뷰 목록
+    const [alcohols, setAlcohols] = useState([]) // 사용자가 좋아요한 전통주
+    const navigate = useNavigate();
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => {
         setShowModal(false);
         setUploadError('');  // 모달을 닫을 때 에러 메시지 초기화
     };
-    
 
     // 사용자 정보 불러오기
     useEffect(() => {
@@ -33,8 +35,31 @@ const MyPage = () => {
                 .catch(error => {
                     console.error('Error fetching user info:', error);
                 });
+            
+            // 내가 쓴 리뷰 가져오기
+            axiosInstance.get(`/reviews/user-reviews?userId=${user.id}`)
+                .then(response => {
+                    setReviews(response.data);  // 리뷰 목록 저장
+                })
+                .catch(error => {
+                    console.error('Error fetching user reviews:', error);
+                });
+
+            // 좋아요한 전통주 가져오기
+            axiosInstance.get(`/likes/list?memberId=${user.id}`)
+                .then(response => {
+                    setAlcohols(response.data);  // 리뷰 목록 저장
+                })
+                .catch(error => {
+                    console.error('Error fetching user reviews:', error);
+                });
         }
     }, [user]);
+
+    // detail page navigate
+    const handleDetailClick = (id) => {
+        navigate(`/DetailPage/${id}`);
+      };
 
     // 파일 선택 처리
     const handleFileChange = (e) => {
@@ -136,54 +161,30 @@ const MyPage = () => {
 
             {/* 활동 상세 */}
             <Row className='mt-3 mb-3'><h3>내 활동</h3></Row>
-            <Row className='mt-3 mb-3'>
-                <Card className='p-3 color-box'>
-                    <Tab.Container defaultActiveKey="home">
+            <Row className='mt-3 mb-3 padding-box'>
+
+                <Card className='reviewList'>
+                    <Tab.Container defaultActiveKey="myReviews" >
                         <Nav className='mb-3' variant="pills" id="myTab">
                             <Nav.Item>
-                                <Nav.Link eventKey="home">내가 쓴 리뷰</Nav.Link>
+                                <Nav.Link eventKey="myReviews">내가 쓴 리뷰</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="profile">좋아요한 리뷰</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link eventKey="contact">즐겨찾기한 전통주</Nav.Link>
+                                <Nav.Link eventKey="myAlcohols">좋아요한 전통주</Nav.Link>
                             </Nav.Item>
                         </Nav>
 
                         <Tab.Content>
-                            <Tab.Pane eventKey="home">
-                                {Array.from({ length: 5 }).map((_, index) => (
-                                    <ReviewCardComponent key={index} authorship={true} />
-                                ))}
-                            </Tab.Pane>
-                            <Tab.Pane eventKey="profile">
-                                {Array.from({ length: 5 }).map((_, index) => (
-                                    <ReviewCardComponent key={index} authorship={false} />
-                                ))}
-                            </Tab.Pane>
-                            <Tab.Pane eventKey="contact">
+                            <Tab.Pane eventKey="myReviews">
                                 <Row>
-                                    <Col>
-                                        <FavoritesCardComponent
-                                            title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
-                                    </Col>
-                                    <Col>
-                                        <FavoritesCardComponent
-                                            title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
-                                    </Col>
-                                    <Col>
-                                        <FavoritesCardComponent
-                                            title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
-                                    </Col>
-                                    <Col>
-                                        <FavoritesCardComponent
-                                            title="전통주"
-                                            content="전통주에 대한 설명이 들어가는 자리입니다." />
-                                    </Col>
+                                    {reviews.map(review => (
+                                        <ReviewCardComponent key={review.id} review={review} onDetailClick={handleDetailClick} />
+                                    ))}
+                                </Row>
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="myAlcohols">
+                                <Row>
+                                    <AlcoholCardComponent alcohols={alcohols} onDetailClick={handleDetailClick} />
                                 </Row>
                             </Tab.Pane>
                         </Tab.Content>

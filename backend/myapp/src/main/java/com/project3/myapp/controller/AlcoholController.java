@@ -2,7 +2,8 @@ package com.project3.myapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.project3.myapp.domain.Alcohol;
-import com.project3.myapp.serviece.AlcoholService;
+import com.project3.myapp.service.AlcoholService;
+
 import java.util.List;
 
 @RestController

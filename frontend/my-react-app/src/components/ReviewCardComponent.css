@@ -1,7 +1,17 @@
 .reviewCard {
-    background: #FFFFFF;
-    border: 1px dashed #D9D9D9;
-    border-radius: 8px;
-    margin-bottom: 16px;
+    display: flex;
+    padding: 0 10px 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
 }
 
+.actionBtn {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-actions {
+    margin-top: 0;
+}

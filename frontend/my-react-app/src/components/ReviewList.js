@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ReviewList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Badge, Modal, Button, Image } from 'react-bootstrap';
-import { faUserCircle, faEdit, faTrashAlt, faTimesCircle , faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faUserCircle, faEdit, faTimesCircle , faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';  // 페이지 이동을 위해 사용
 
@@ -24,6 +24,7 @@ function ReviewList({ productId }) {
                     throw new Error('리뷰 데이터를 가져오지 못했습니다.');
                 }
                 const data = await response.json();
+                console.log("Fetched Reviews:", data); // 데이터를 로그로 출력
                 setReviews(data);
             } catch (error) {
                 console.error('Error fetching reviews:', error);
@@ -104,26 +105,34 @@ function ReviewList({ productId }) {
             <div className="review-list">
                 <div className='review-title'>
                     <p>리뷰 ({reviews.length})</p>  {/* 리뷰 개수 표시 */}
-                    <button onClick={handleReviewClick} className="write-review-btn">
-                        <FontAwesomeIcon icon={faPen} className="write-icon" /> 리뷰 쓰기
-                    </button>
+                    <div className='rank-filter'>
+                        <div className='card-filter'>
+                            <button className='filter-btn'>
+                                최신순
+                            </button>
+                            <button className='filter-btn'>
+                                별점순
+                            </button>
+                        </div>
+                        <button onClick={handleReviewClick} className="write-review-btn">
+                            <FontAwesomeIcon icon={faPen} className="write-icon" /> 리뷰 쓰기
+                        </button>
+                    </div>
                 </div>
                 {reviews.map((review) => (
                     <div className="review-item" key={review.id}>
                         <div className="review-header">
                             <div className='user-icon'>
-                                <img className="avatar" src={user.profileImageUrl} />
+                                <img className="avatar" src={review.profileImageUrl || "default-profile-url.jpg"} alt='profileImage'/>
                             </div>
                             <div className="review-info">
-                                <h4>{user.nickname || "익명 사용자"}</h4> {/* 유저 이름이 있다면 표시, 없으면 "익명 사용자" */}
-                                
+                                <h4>{review.nickname || "익명 사용자"}</h4>
                                 <div className="review-badges">
-                                    <Badge className='badge' bg="secondary">{user.ageGroup}대</Badge>
-                                    <Badge className='badge' bg="secondary">lv.{user.level}</Badge>
+                                    <Badge className='badge' bg="secondary">{review.ageGroup}대</Badge>
+                                    <Badge className='badge' bg="secondary">lv.{review.level}</Badge>
                                 </div>
-
-                                <span className="review-rating">{"★".repeat(review.rating)}</span> {/* 별점 표시 */}
-                                <span className="review-date">{formatDate(review.createdAt)}</span>  {/* 날짜 포맷 */}
+                                <span className="review-date">{formatDate(review.review.createdAt)}</span>  {/* 날짜 포맷 */}
+                                <span className="review-rating">{"★".repeat(review.review.rating)}</span> {/* 별점 표시 */}
                             </div>
                             {user && user.id === review.userId && (
                                 <div className="review-actions">
@@ -140,12 +149,12 @@ function ReviewList({ productId }) {
                                 </div>
                             )}
                         </div>
-                        <p>{review.reviewText}</p>  {/* 리뷰 내용 */}
-                        {review.tipText && <p className='tips'><FontAwesomeIcon className='lightBulb' icon={faCheckCircle}/> <strong>꿀팁!</strong><br/>{review.tipText}</p>}  {/* 꿀팁 내용 (있을 경우에만) */}
-                        {review.images && review.images.length > 0 && (
+                        <p>{review.review.reviewText}</p>  {/* 리뷰 내용 */}
+                        {review.review.tipText && <p className='tips'><FontAwesomeIcon className='lightBulb' icon={faCheckCircle}/> <strong>꿀팁!</strong><br/>{review.review.tipText}</p>}  {/* 꿀팁 내용 (있을 경우에만) */}
+                        {review.review.images && review.review.images.length > 0 && (
                             <div className="review-images">
-                                {review.images.map((imageUrl, index) => (
-                                    <img key={index} src={imageUrl} alt={`리뷰 이미지 ${index + 1}`} className="review-image" onClick={() => handleImageClick(review.images, index)} />
+                                {review.review.images.map((imageUrl, index) => (
+                                    <img key={index} src={imageUrl} alt={`리뷰 이미지 ${index + 1}`} className="review-image" onClick={() => handleImageClick(review.review.images, index)} />
                                 ))}
                             </div>
                         )}

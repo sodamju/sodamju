@@ -1,6 +1,6 @@
 package com.project3.myapp.controller;
 
-import com.project3.myapp.serviece.S3Service;
+import com.project3.myapp.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

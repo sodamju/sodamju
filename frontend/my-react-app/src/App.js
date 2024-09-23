@@ -27,14 +27,11 @@ function App() {
             <Route path="/FindPassword" element={<FindPassword />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/edit-member" element={<EditMember />} />
-
             <Route path="/review/:productId" element={<Review isEditing={false} />} />
             <Route path="/review/:productId/edit/:reviewId" element={<Review isEditing={true} />} />
             <Route path="/ListPage" element={<ListPage />} />
             <Route path="/RankAll" element={<ListPage />} />
-
             <Route path="/search/:searchTerm" element={<ListPage />} />
-
             <Route path="/DetailPage/:productId" element={<DetailPage />} />
           </Routes>
         </Layout>
