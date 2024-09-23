@@ -35,4 +35,17 @@ public class AlcoholController {
     public List<Alcohol> searchAlcoholByTitle(@RequestParam("title") String title) {
         return alcoholService.searchAlcoholByTitle(title);
     }
+
+    //카테고리별 필터링 및 정렬
+    // 좋아요 순 정렬 API
+    @GetMapping("/sorted-by-likes")
+    public List<Alcohol> getAlcoholsSortedByLikes(@RequestParam(required = false) String category) {
+        return alcoholService.getAlcoholsSortedByLikes(category);
+    }
+
+    // 리뷰 순 정렬 API
+    @GetMapping("/sorted-by-reviews")
+    public List<Alcohol> getAlcoholsSortedByReviews(@RequestParam(required = false) String category) {
+        return alcoholService.getAlcoholsSortedByReviews(category);
+    }
 }

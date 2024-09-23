@@ -4,52 +4,59 @@ import { useNavigate, useParams } from 'react-router-dom';  // useParams로 URL�
 import './SearchSection.css';
 import CategoryButtonComponent from './CategoryButtonComponent';
 import AlcoholCardComponent from './AlcoholCardComponent';
+import axiosInstance from '../api/myApi';
 
 function SearchSection() {
-  const [alcohols, setAlcohols] = useState([]);  // 데이터 상태 저장
-  const [filteredAlcohols, setFilteredAlcohols] = useState([]);  // 검색어로 필터링된 데이터 저장
-  const [category, setCategory] = useState('');  // 필터링을 위한 카테고리 상태
-  const [sortOrder, setSortOrder] = useState('가나다순'); // 정렬 기준 상태 ('가나다순', '좋아요순')
-  const { searchTerm } = useParams();  // URL에서 검색어 가져옴
+  const { searchTerm } = useParams();  // URL에서 검색어 가져오기
+  const [alcohols, setAlcohols] = useState([]);  // 전통주 목록 상태 저장
+  const [category, setCategory] = useState('전체');  // 카테고리 기본 설정: '전체'
+  const [sortOption, setSortOption] = useState('likes');  // 기본 정렬 기준: '좋아요 순'
+  const [filteredAlcohols, setFilteredAlcohols] = useState([]);  // 필터링된 전통주 목록 저장
   const navigate = useNavigate();
 
-  // 카테고리 또는 검색어로 필터링된 데이터를 가져오는 함수
+  // API 호출을 통해 데이터를 가져오는 함수
   const fetchAlcohols = async () => {
-    const url = category 
-      ? `http://localhost:8080/api/alcohols/category?category=${category}` 
-      : `http://localhost:8080/api/alcohols`;
+    try {
+      let url = '';
+      
+      // 정렬 옵션에 따라 다른 API 엔드포인트를 사용
+      if (sortOption === 'likes') {
+        url = `alcohols/sorted-by-likes?category=${category === '전체' ? '' : category}`;
+      } else if (sortOption === 'reviews') {
+        url = `alcohols/sorted-by-reviews?category=${category === '전체' ? '' : category}`;
+      }
 
-    const response = await fetch(url);
-    const data = await response.json();
-    setAlcohols(data);  // 가져온 데이터를 상태로 저장
-  };
-
-  // 검색어와 카테고리로 필터링
-  const filterBySearchTerm = (data) => {
-    if (searchTerm) {
-      // 검색어와 띄어쓰기를 제거한 후 검색 (대소문자 구분 없이)
-      const normalizedSearchTerm = searchTerm.replace(/\s+/g, '').toLowerCase();
-      return data.filter(alcohol =>
-        alcohol.title.replace(/\s+/g, '').toLowerCase().includes(normalizedSearchTerm)
-      );
+      const response = await axiosInstance.get(url);
+      setAlcohols(response.data);  // 데이터를 상태로 저장
+    } catch (error) {
+      console.error('Error fetching alcohols:', error);
     }
-    return data;
   };
 
+  // 카테고리 및 정렬 옵션 변경 시 데이터를 새로 가져옴
   useEffect(() => {
     fetchAlcohols();
-  }, [category]);
+  }, [category, sortOption]);
 
-  useEffect(() => {
-    // alcohols 데이터를 검색어로 필터링
-    if (alcohols.length > 0) {
-      let filteredData = filterBySearchTerm(alcohols);
-      filteredData = sortAlcohols(filteredData);
-      setFilteredAlcohols(filteredData);
+  // 검색어에 따른 필터링 함수
+  const filterBySearchTerm = () => {
+    if (searchTerm) {
+      const normalizedSearchTerm = searchTerm.replace(/\s+/g, '').toLowerCase();
+      const filtered = alcohols.filter(alcohol =>
+        alcohol.title.replace(/\s+/g, '').toLowerCase().includes(normalizedSearchTerm)
+      );
+      setFilteredAlcohols(filtered);
+    } else {
+      setFilteredAlcohols(alcohols);  // 검색어가 없으면 전체 리스트 출력
     }
-  }, [alcohols, searchTerm, sortOrder]);
+  };
 
-  // 필터 버튼 클릭 시 호출되는 함수
+  // 검색어가 변경될 때마다 필터링 실행
+  useEffect(() => {
+    filterBySearchTerm();
+  }, [searchTerm, alcohols]);
+
+  // 카테고리 버튼 클릭 시 호출되는 함수
   const handleCategoryClick = (selectedCategory) => {
     setCategory(selectedCategory);  // 카테고리 상태 업데이트
   };
@@ -59,50 +66,19 @@ function SearchSection() {
     navigate(`/DetailPage/${id}`);  // 해당 항목의 상세 페이지로 이동
   };
 
-  // 정렬 함수 (가나다순 또는 좋아요순)
-  const sortAlcohols = (data) => {
-    if (sortOrder === '가나다순') {
-      return data.sort((a, b) => a.title.localeCompare(b.title, 'ko-KR'));
-    } else if (sortOrder === '좋아요순') {
-      return data.sort((a, b) => b.likes - a.likes);
-    }
-    return data; // 기본 정렬 (정렬 없음)
-  };
-
-  // 정렬 기준 변경 함수 (가나다순, 좋아요순)
-  const handleSortClick = (order) => {
-    setSortOrder(order);
-  };
-
   return (
     <section className="card-section">
       <div className='card-sec'>
         {/* 검색 결과 타이틀 */}
-        <h5>{searchTerm ? `"${searchTerm}"의 검색결과 (${filteredAlcohols.length}건)` : '전체 결과'}</h5>
+        <h5>{searchTerm ? `"${searchTerm}"의 검색결과 (${filteredAlcohols.length}건)` : `'${category === '' ? '전체' : category} 결과(${filteredAlcohols.length}건)'`}</h5>
+        {/* 정렬 옵션 선택 버튼 */}
+        <div className="sort-buttons">
+          <button onClick={() => setSortOption('likes')}>좋아요 순</button>
+          <button onClick={() => setSortOption('reviews')}>리뷰 순</button>
+        </div>
 
-        {/* 검색어가 없을 때 정렬 버튼 추가 */}
-        {!searchTerm && (
-          <div className="card-filter">
-            <button 
-              className={`sort-btn filter-btn ${sortOrder === '가나다순' ? 'active' : ''}`} 
-              onClick={() => handleSortClick('가나다순')}
-            >
-              가나다순
-            </button>
-            <button 
-              className={`sort-btn filter-btn ${sortOrder === '좋아요순' ? 'active' : ''}`} 
-              onClick={() => handleSortClick('좋아요순')}
-            >
-              좋아요순
-            </button>
-          </div>
-        )}
-
-        {/* 카테고리 필터 버튼 (검색어가 있을 때만 표시) */}
-        {searchTerm && (
-          <CategoryButtonComponent category={category} onCategoryClick={handleCategoryClick} />
-        )}
-
+        <CategoryButtonComponent category={category} onCategoryClick={handleCategoryClick} />
+        {/* 좋아요 순, 리뷰순 정렬 기능 추가 하고 싶음 */}
         {/* 검색 결과 리스트 */}
         <AlcoholCardComponent alcohols={filteredAlcohols} onDetailClick={handleDetailClick} />
       </div>

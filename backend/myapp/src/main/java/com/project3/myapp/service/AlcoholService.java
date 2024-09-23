@@ -28,6 +28,22 @@ public class AlcoholService {
         String normalizedTitle = title.replaceAll("\\s+", "").toLowerCase();  // 공백 제거, 소문자로 변환
         return alcoholRepository.findByTitleContainingIgnoreCase(normalizedTitle);
     }
+
+    // 좋아요 순으로 정렬된 전통주 목록 반환 (기본)
+    public List<Alcohol> getAlcoholsSortedByLikes(String category) {
+        if (category == null || category.isEmpty()) {
+            return alcoholRepository.findAllAlcoholsSortedByLikes();  // 전체 정렬
+        }
+        return alcoholRepository.findByCategorySortedByLikes(category);  // 카테고리 정렬
+    }
+
+    // 리뷰 순으로 정렬된 전통주 목록 반환
+    public List<Alcohol> getAlcoholsSortedByReviews(String category) {
+        if (category == null || category.isEmpty()) {
+            return alcoholRepository.findAllAlcoholsSortedByReviews();  // 전체 정렬
+        }
+        return alcoholRepository.findByCategorySortedByReviews(category);  // 카테고리 정렬
+    }
 }
 
 

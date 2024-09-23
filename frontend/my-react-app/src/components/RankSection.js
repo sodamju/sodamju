@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import CategoryButtonComponent from './CategoryButtonComponent';
 import AlcoholCardComponent from './AlcoholCardComponent';
 import './SearchSection.css';
+import axiosInstance from '../api/myApi';
 
 function RankSection() {
   const [alcohols, setAlcohols] = useState([]);
@@ -10,13 +11,14 @@ function RankSection() {
   const navigate = useNavigate();
 
   const fetchAlcohols = async (selectedCategory) => {
-    const url = selectedCategory 
-      ? `http://localhost:8080/api/alcohols/category?category=${selectedCategory}` 
-      : `http://localhost:8080/api/alcohols`;
-    
-    const response = await fetch(url);
-    const data = await response.json();
-    setAlcohols(data);
+    try {
+      const url = `alcohols/sorted-by-likes?category=${category === '전체' ? '' : category}`;
+
+      const response = await axiosInstance.get(url);
+      setAlcohols(response.data);  // 데이터를 상태로 저장
+    } catch (error) {
+      console.error('Error fetching alcohols:', error);
+    }
   };
 
   useEffect(() => {
@@ -39,7 +41,6 @@ function RankSection() {
 
     // 좋아요 총합으로 내림차순 정렬하고 상위 10개 추출
     return filteredAlcohols
-      .sort((a, b) => b.likes - a.likes)
       .slice(0, 10);
   };
 
