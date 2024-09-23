@@ -1,5 +1,6 @@
 // AlcoholCardComponent.js
 import React from 'react';
+import './AlcoholCardComponent.css';
 
 const AlcoholCardComponent = ({ alcohols, onDetailClick }) => {
   return (
@@ -7,7 +8,7 @@ const AlcoholCardComponent = ({ alcohols, onDetailClick }) => {
       {alcohols.map((alcohol) => (
         <div className="card-style" key={alcohol.id}>
           <div className="card-image-placeholder">
-            <img src={alcohol.thumUrl} alt={alcohol.title} />
+            <img className='alcoholImg' src={alcohol.thumUrl} alt={alcohol.title} />
           </div>
           <div className="card-content">
             <h3 className="card-title">{alcohol.title}</h3>

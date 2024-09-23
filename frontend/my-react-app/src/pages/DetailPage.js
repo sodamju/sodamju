@@ -28,19 +28,11 @@ function DetailPage() {
         fetchProductDetails();
     }, [productId]);
 
-    // 리뷰 작성 페이지로 이동하는 함수
-    const handleReviewClick = () => {
-        navigate(`/review/${productId}`);  // URL에 productId 포함하여 리뷰 작성 페이지로 이동
-    };
-
     return (
         <div className="content">
             {product && <ProductCard product={product} />}  {/* product 정보를 ProductCard로 전달 */}
             <InfoCard />
             {product && <ReviewList productId={productId} />}
-            <button onClick={handleReviewClick} className="write-review-btn">
-                리뷰 쓰기
-            </button>
         </div>
     );
 }

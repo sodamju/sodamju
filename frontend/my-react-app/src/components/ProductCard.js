@@ -9,8 +9,8 @@ const ProductCard = ({ product }) => {
   return (
     <div className="productCard">
       <div className="topSection">
-        <div className="imageContainer">
-          <img src={product.thumUrl} alt={product.title} />  {/* 제품 이미지 */}
+        <div className="image-Container">
+          <img className='alcoholImg' src={product.thumUrl} alt={product.title} />  {/* 제품 이미지 */}
         </div>
         <div className="productDetails">
           <div className="category">

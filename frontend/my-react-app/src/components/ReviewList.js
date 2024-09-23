@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './ReviewList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { Badge, Modal, Button, Image } from 'react-bootstrap';
+import { faUserCircle, faEdit, faTrashAlt, faTimesCircle , faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';  // 페이지 이동을 위해 사용
 
@@ -9,6 +10,10 @@ function ReviewList({ productId }) {
     const [reviews, setReviews] = useState([]);
     const { user } = useAuth();  // 현재 로그인한 사용자 정보
     const navigate = useNavigate();  // 페이지 이동을 위한 훅
+    const [showModal, setShowModal] = useState(false);
+    const [selectedImages, setSelectedImages] = useState([]);
+    const [imageIndex, setImageIndex] = useState(0);
+
 
     // 리뷰 데이터를 가져오는 함수
     useEffect(() => {
@@ -64,11 +69,44 @@ function ReviewList({ productId }) {
         return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
     };
 
+    // 리뷰 작성 페이지로 이동하는 함수
+    const handleReviewClick = () => {
+        navigate(`/review/${productId}`);  // URL에 productId 포함하여 리뷰 작성 페이지로 이동
+    };
+
+    // 이미지 클릭했을 때
+    const handleImageClick = (images, index) => {
+        setSelectedImages(images);
+        setImageIndex(index);
+        setShowModal(true);
+    };
+    
+    // 이미지 양옆 이동
+    const handleNextImage = () => {
+        if (imageIndex < selectedImages.length - 1) {
+            setImageIndex(imageIndex + 1);
+        }
+    };
+    
+    const handlePrevImage = () => {
+        if (imageIndex > 0) {
+            setImageIndex(imageIndex - 1);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+    
+
     return (
         <div className="review">
             <div className="review-list">
                 <div className='review-title'>
                     <p>리뷰 ({reviews.length})</p>  {/* 리뷰 개수 표시 */}
+                    <button onClick={handleReviewClick} className="write-review-btn">
+                        <FontAwesomeIcon icon={faPen} className="write-icon" /> 리뷰 쓰기
+                    </button>
                 </div>
                 {reviews.map((review) => (
                     <div className="review-item" key={review.id}>
@@ -78,8 +116,14 @@ function ReviewList({ productId }) {
                             </div>
                             <div className="review-info">
                                 <h4>{user.nickname || "익명 사용자"}</h4> {/* 유저 이름이 있다면 표시, 없으면 "익명 사용자" */}
-                                <span className="review-date">{formatDate(review.createdAt)}</span>  {/* 날짜 포맷 */}
+                                
+                                <div className="review-badges">
+                                    <Badge className='badge' bg="secondary">{user.ageGroup}대</Badge>
+                                    <Badge className='badge' bg="secondary">lv.{user.level}</Badge>
+                                </div>
+
                                 <span className="review-rating">{"★".repeat(review.rating)}</span> {/* 별점 표시 */}
+                                <span className="review-date">{formatDate(review.createdAt)}</span>  {/* 날짜 포맷 */}
                             </div>
                             {user && user.id === review.userId && (
                                 <div className="review-actions">
@@ -89,7 +133,7 @@ function ReviewList({ productId }) {
                                         className="action-icon"
                                     />
                                     <FontAwesomeIcon
-                                        icon={faTrashAlt}
+                                        icon={faTimesCircle}
                                         onClick={() => handleDelete(review.id)}
                                         className="action-icon"
                                     />
@@ -97,14 +141,28 @@ function ReviewList({ productId }) {
                             )}
                         </div>
                         <p>{review.reviewText}</p>  {/* 리뷰 내용 */}
-                        {review.tipText && <p><strong>Tip:</strong> {review.tipText}</p>}  {/* 꿀팁 내용 (있을 경우에만) */}
+                        {review.tipText && <p className='tips'><FontAwesomeIcon className='lightBulb' icon={faCheckCircle}/> <strong>꿀팁!</strong><br/>{review.tipText}</p>}  {/* 꿀팁 내용 (있을 경우에만) */}
                         {review.images && review.images.length > 0 && (
                             <div className="review-images">
                                 {review.images.map((imageUrl, index) => (
-                                    <img key={index} src={imageUrl} alt={`리뷰 이미지 ${index + 1}`} className="review-image" />
+                                    <img key={index} src={imageUrl} alt={`리뷰 이미지 ${index + 1}`} className="review-image" onClick={() => handleImageClick(review.images, index)} />
                                 ))}
                             </div>
                         )}
+                        <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
+                            <Modal.Body>
+                                <Image src={selectedImages[imageIndex]} alt="Selected Review Image" style={{ width: '100%' }} />
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handlePrevImage} disabled={imageIndex === 0}>
+                                    이전
+                                </Button>
+                                <Button variant="primary" onClick={handleNextImage} disabled={imageIndex === selectedImages.length - 1}>
+                                    다음
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+
                     </div>
                 ))}
             </div>

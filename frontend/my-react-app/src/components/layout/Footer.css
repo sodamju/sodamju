@@ -2,12 +2,13 @@
 
 /* Footer 스타일 */
 .footer {
-  
+    font-family: 'Arial', sans-serif; /* 모던한 폰트로 변경 */
     height: 200px;
     display: flex;
     justify-content: space-around;
     padding: 30px;
     background-color: #f8f8f8;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1); /* 상단 그림자 효과 추가 */
   }
   
   .footer-left, .footer-middle, .footer-right {
@@ -31,10 +32,19 @@
   }
   
   .footer-middle ul li a, .footer-right ul li a {
-    color: #333;
     text-decoration: none;
-  }
-  
-  .footer-middle ul li a:hover, .footer-right ul li a:hover {
+    transition: color 0.3s ease; /* 부드러운 색상 전환 효과 */
+}
+
+.footer-middle ul li a:hover, .footer-right ul li a:hover {
+    color: #ff6347; /* 호버 시 색상 변경 */
     text-decoration: underline;
-  }
+}
+
+.social-icon {
+    transition: transform 0.3s ease; /* 아이콘 변환 효과 */
+}
+
+.social-icon:hover {
+    transform: scale(1.1); /* 호버 시 아이콘 확대 */
+}

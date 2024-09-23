@@ -9,6 +9,7 @@ function SearchSection() {
   const [alcohols, setAlcohols] = useState([]);  // 데이터 상태 저장
   const [filteredAlcohols, setFilteredAlcohols] = useState([]);  // 검색어로 필터링된 데이터 저장
   const [category, setCategory] = useState('');  // 필터링을 위한 카테고리 상태
+  const [sortOrder, setSortOrder] = useState('가나다순'); // 정렬 기준 상태 ('가나다순', '좋아요순')
   const { searchTerm } = useParams();  // URL에서 검색어 가져옴
   const navigate = useNavigate();
 
@@ -42,10 +43,11 @@ function SearchSection() {
   useEffect(() => {
     // alcohols 데이터를 검색어로 필터링
     if (alcohols.length > 0) {
-      const filteredData = filterBySearchTerm(alcohols);
+      let filteredData = filterBySearchTerm(alcohols);
+      filteredData = sortAlcohols(filteredData);
       setFilteredAlcohols(filteredData);
     }
-  }, [alcohols, searchTerm]);
+  }, [alcohols, searchTerm, sortOrder]);
 
   // 필터 버튼 클릭 시 호출되는 함수
   const handleCategoryClick = (selectedCategory) => {
@@ -57,15 +59,50 @@ function SearchSection() {
     navigate(`/DetailPage/${id}`);  // 해당 항목의 상세 페이지로 이동
   };
 
+  // 정렬 함수 (가나다순 또는 좋아요순)
+  const sortAlcohols = (data) => {
+    if (sortOrder === '가나다순') {
+      return data.sort((a, b) => a.title.localeCompare(b.title, 'ko-KR'));
+    } else if (sortOrder === '좋아요순') {
+      return data.sort((a, b) => b.likes - a.likes);
+    }
+    return data; // 기본 정렬 (정렬 없음)
+  };
+
+  // 정렬 기준 변경 함수 (가나다순, 좋아요순)
+  const handleSortClick = (order) => {
+    setSortOrder(order);
+  };
+
   return (
     <section className="card-section">
       <div className='card-sec'>
         {/* 검색 결과 타이틀 */}
         <h5>{searchTerm ? `"${searchTerm}"의 검색결과 (${filteredAlcohols.length}건)` : '전체 결과'}</h5>
-        
-        {/* 카테고리 필터 버튼 */}
-        <CategoryButtonComponent category={category} onCategoryClick={handleCategoryClick} />
-        
+
+        {/* 검색어가 없을 때 정렬 버튼 추가 */}
+        {!searchTerm && (
+          <div className="card-filter">
+            <button 
+              className={`sort-btn filter-btn ${sortOrder === '가나다순' ? 'active' : ''}`} 
+              onClick={() => handleSortClick('가나다순')}
+            >
+              가나다순
+            </button>
+            <button 
+              className={`sort-btn filter-btn ${sortOrder === '좋아요순' ? 'active' : ''}`} 
+              onClick={() => handleSortClick('좋아요순')}
+            >
+              좋아요순
+            </button>
+          </div>
+        )}
+
+        {/* 카테고리 필터 버튼 (검색어가 있을 때만 표시) */}
+        {searchTerm && (
+          <CategoryButtonComponent category={category} onCategoryClick={handleCategoryClick} />
+        )}
+
         {/* 검색 결과 리스트 */}
         <AlcoholCardComponent alcohols={filteredAlcohols} onDetailClick={handleDetailClick} />
       </div>

@@ -145,14 +145,14 @@ const Review = ({ isEditing }) => {  // isEditing prop을 통해 작성 또는 �
 
     return (
         <Container>
-            <Row className='mt-3 mb-3'><h1>{isEditing ? '리뷰 수정' : '리뷰 쓰기'}</h1></Row>
+            <Row className='mt-3 mb-3 review-title'><h1>{isEditing ? '리뷰 수정' : '리뷰 쓰기'}</h1></Row>
             {product && (
                 <Row className='mt-3 mb-3'>
                     <Card className='p-3'>
                         <Row>
                             <Col>
-                                <div className="imageContainer">
-                                    <Image src={product.thumUrl} alt={product.title} />
+                                <div className="image-Container">
+                                    <Image className='alcoholImg' src={product.thumUrl} alt={product.title} />
                                 </div>
                             </Col>
                             <Col xs={9}>
@@ -160,7 +160,7 @@ const Review = ({ isEditing }) => {  // isEditing prop을 통해 작성 또는 �
                                     <h1>{product.title}</h1>
                                 </Row>
                                 <Row>
-                                    <div>{product.description}</div>
+                                    <div className='product-description'>{product.description}</div>
                                 </Row>
                             </Col>
                         </Row>
@@ -239,7 +239,7 @@ const Review = ({ isEditing }) => {  // isEditing prop을 통해 작성 또는 �
                         )}
                     </Card>
                 </Row>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" className='reviewSubmitBtn'>
                     리뷰 제출
                 </Button>
             </Form>

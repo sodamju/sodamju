@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  min-width: 50vw;
 }
 
 .App-logo {
@@ -26,6 +27,10 @@
 
 .App-link {
   color: #61dafb;
+}
+
+body, html {
+  min-width: 50vw; /* 뷰포트 너비의 50%를 최소 너비로 설정 */
 }
 
 @keyframes App-logo-spin {

@@ -46,11 +46,18 @@ function RankSection() {
   // 선택한 카테고리의 상위 10개 상품 가져오기
   const topRankedAlcohols = getTopRankedAlcohols(alcohols, category);
 
+  const handleRankAllClick = () => {
+    navigate(`/RankAll`);
+  };
+
   return (
     <section className="card-section">
       <div className='card-sec'>
         <h5>카테고리별 랭킹</h5>
         <CategoryButtonComponent category={category} onCategoryClick={handleCategoryClick} />
+        <button className='btn All-btn' onClick={handleRankAllClick}>
+          전체 보러가기
+        </button>
         <AlcoholCardComponent alcohols={topRankedAlcohols} onDetailClick={handleDetailClick} />
       </div>
     </section>

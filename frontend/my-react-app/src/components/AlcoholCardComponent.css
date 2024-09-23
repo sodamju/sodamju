@@ -1,0 +1,21 @@
+.card-image-placeholder {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center;    /* 세로 중앙 정렬 */
+    background-color: white;
+}
+  
+.alcoholImg {
+    max-width: 100%;  /* 이미지를 컨테이너의 너비에 맞추되, 비율 유지 */
+    max-height: 100%; /* 이미지를 컨테이너의 높이에 맞추되, 비율 유지 */
+    margin: 15px;
+}
+
+.card-body {
+    display: -webkit-box;
+    -webkit-line-clamp: 6; /* 표시할 줄의 수를 제한 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }

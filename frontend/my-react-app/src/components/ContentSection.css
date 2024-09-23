@@ -1,21 +1,37 @@
 /* ContentSection.css */
 .content-section {
   display: flex;
-  margin: 0 20px;
-  padding: 50px 20px;
+  margin: 0;
+  padding: 50px 40px;
   align-items: center;
+  background-image: url(../assets/images/4.png);
+  background-size: cover; /* 이미지가 화면 크기에 맞게 조정됨 */
+  background-position: 50% 100%; /* 이미지를 중앙에 위치시킴 */
+  background-repeat: no-repeat; /* 이미지 반복을 방지 */
+  background-attachment: fixed; /* 페이지 스크롤 시 배경 이미지 고정 */
   }
   
   .image-placeholder {
-    width: 400px;
+    max-width: 400px;
     height: 250px;
-    background-color: #ccc;
     margin-right: 20px;
+  }
+
+  .text-content{
+    background-color: rgba(255, 255, 255, 0.65);
+    padding: 15px;
+    border-radius: 30px;
   }
   
   .text-content h3 {
-    font-size: 1.5rem;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
     margin-bottom: 10px;
+  }
+
+  .text-content h4 {
+    font-size: 1.2rem; 
   }
   
   .text-content p {

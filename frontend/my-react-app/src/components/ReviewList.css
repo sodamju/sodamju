@@ -4,23 +4,54 @@
 }
 
 .review-list {
-    background-color: #fff;
+    background-color: #F3E0D6; /* 전통 한지 색상 */
     padding: 20px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 20px;
+  }
+
+  .user-icon{
+    margin-right: 10px;
+    margin-left: 10px;
   }
 
   .review-title p {
-    font-size: 15px;
+    font-size: 1.1rem;
     font-weight: bold;
-    margin: 10px 0 20px 0;
+    margin: 10px 0 30px 10px;
+  }
+
+  .review-actions{
+    margin: 0 0 auto auto;
+  }
+
+  .write-icon {
+    color: white;
+  }
+
+  .action-icon {
+    margin-right: 6px;
+  }
+
+  .write-review-btn{
+    width: 100%;
+    background-color: #586149;
+    padding: 5px;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    margin-bottom: 25px;
+  }
+
+  .write-review-btn:hover {
+    background-color: #454D39;
   }
   
   .review-item {
     border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
     background-color: #fff;
   }
   
@@ -33,17 +64,34 @@
   .avatar {
     width: 50px;
     height: 50px;
+    object-fit: cover;
     border-radius: 50%;
     margin-right: 10px;
   }
+
+  .review-images{
+    margin-left: 80px;
+    margin-top: 20px;
+  }
+
+  .review-images img {
+    width: 150px; /* 고정 크기 */
+    height: 150px;
+    object-fit: cover;
+    margin-right: 10px;
+    margin-top: 10px;
+    border: 1px solid #879788;
+    border-radius: 20px;
+}
   
   .review-info {
     flex-grow: 1;
   }
   
   .review-info h4 {
-    margin: 0;
+    margin-bottom: 5px;
     font-size: 16px;
+    font-weight: bold;
   }
   
   .review-date {
@@ -59,7 +107,30 @@
   
   .review-item p {
     margin: 0;
-    margin-left: 60px;
+    margin-left: 80px;
     color: #333;
-    font-size: 14px;
+    font-size: 16px;
+    margin-bottom: 5px;
   }
+
+  .badge {
+    margin-right: 5px;
+  }
+
+  .lightBulb {
+    color: #879788;
+  }
+  .tips{
+    padding-top: 10px;
+    font-size: 18px;
+  }
+
+  .action-icon {
+    cursor: pointer;
+    margin-left: 3px;
+    color: #879788;
+  }
+
+.action-icon:hover {
+    color: #454D39; /* 호버 시 색상 변경 */
+ }
