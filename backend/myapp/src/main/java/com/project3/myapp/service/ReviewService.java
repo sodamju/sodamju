@@ -12,8 +12,8 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    // 특정 productId에 해당하는 리뷰 목록 조회
-    public List<Review> getReviewsByProductId(String productId) {
+    // 특정 alcoholId에 해당하는 리뷰 목록 조회
+    public List<Review> getReviewsByAlcoholId(String productId) {
         return reviewRepository.findByProductId(productId);
     }
     // 특정 userId에 해당하는 리뷰 조회

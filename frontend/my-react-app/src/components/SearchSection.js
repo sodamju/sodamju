@@ -9,7 +9,7 @@ import axiosInstance from '../api/myApi';
 function SearchSection() {
   const { searchTerm } = useParams();  // URL에서 검색어 가져오기
   const [alcohols, setAlcohols] = useState([]);  // 전통주 목록 상태 저장
-  const [category, setCategory] = useState('전체');  // 카테고리 기본 설정: '전체'
+  const [category, setCategory] = useState('');  // 카테고리 기본 설정: '전체'
   const [sortOption, setSortOption] = useState('likes');  // 기본 정렬 기준: '좋아요 순'
   const [filteredAlcohols, setFilteredAlcohols] = useState([]);  // 필터링된 전통주 목록 저장
   const navigate = useNavigate();
@@ -71,14 +71,13 @@ function SearchSection() {
       <div className='card-sec'>
         {/* 검색 결과 타이틀 */}
         <h5>{searchTerm ? `"${searchTerm}"의 검색결과 (${filteredAlcohols.length}건)` : `'${category === '' ? '전체' : category} 결과(${filteredAlcohols.length}건)'`}</h5>
-        {/* 정렬 옵션 선택 버튼 */}
-        <div className="sort-buttons">
-          <button onClick={() => setSortOption('likes')}>좋아요 순</button>
-          <button onClick={() => setSortOption('reviews')}>리뷰 순</button>
-        </div>
 
         <CategoryButtonComponent category={category} onCategoryClick={handleCategoryClick} />
-        {/* 좋아요 순, 리뷰순 정렬 기능 추가 하고 싶음 */}
+        {/* 정렬 옵션 선택 버튼 */}
+        <div className="sort-buttons">
+          <button className={`sort-btn ${sortOption === 'likes' ? 'active' : ''}`} onClick={() => setSortOption('likes')}>좋아요 순</button>
+          <button className={`sort-btn ${sortOption === 'reviews' ? 'active' : ''}`} onClick={() => setSortOption('reviews')}>리뷰 순</button>
+        </div>
         {/* 검색 결과 리스트 */}
         <AlcoholCardComponent alcohols={filteredAlcohols} onDetailClick={handleDetailClick} />
       </div>

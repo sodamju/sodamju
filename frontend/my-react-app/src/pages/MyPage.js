@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Nav, Tab, Stack, Badge, Image, Card, Container, Row, Col, Form, Button, Modal, Alert } from 'react-bootstrap';
+import { Nav, Tab, Stack, Badge, Image, Card, Container, Row, Col, Form, Button, Modal } from 'react-bootstrap';
 import ReviewCardComponent from '../components/ReviewCardComponent';
 import AlcoholCardComponent from '../components/AlcoholCardComponent';
 import { useAuth } from '../contexts/AuthContext';  // 로그인한 사용자 정보 사용
@@ -164,7 +164,7 @@ const MyPage = () => {
             {/* 활동 상세 */}
             <Row className='mt-3 mb-3'><h3>내 활동</h3></Row>
             <Row className='mt-3 mb-3'>
-                <Card className='p-3'>
+                <Card className='p-3 color-box'>
                     <Tab.Container defaultActiveKey="myReviews">
                         <Nav className='mb-3' variant="pills" id="myTab">
                             <Nav.Item>

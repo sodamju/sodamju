@@ -4,6 +4,6 @@ import com.project3.myapp.domain.Review;
 import java.util.List;
 
 public interface ReviewRepository extends MongoRepository<Review, String> {
-   List<Review> findByProductId(String productId);
+   List<Review> findByAlcoholId(String alcoholId);
    List<Review> findByUserId(String userId);
 }

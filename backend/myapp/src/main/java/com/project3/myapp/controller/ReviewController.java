@@ -61,7 +61,7 @@ public class ReviewController {
         List<ReviewWithAlcohols> result = new ArrayList<>();
 
         for (Review review : reviews) {
-            Alcohol alcohol = alcoholService.getAlcoholById(review.getProductId());
+            Alcohol alcohol = alcoholService.getAlcoholById(review.getAlcoholId());
             result.add(new ReviewWithAlcohols(review, alcohol));
         }
         return result;

@@ -49,6 +49,31 @@
   color: white;
 }
 
+/* 정렬 버튼 스타일 */
+.sort-btn {
+  padding: 5px 10px;
+  background-color: white;
+  color: #586149;
+  border-radius: 50px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: none;
+}
+
+.sort-btn:hover {
+  background-color: #454D39;
+  color: white;
+}
+
+.sort-btn.active {
+  background-color: #454D39;
+  color: white;
+}
+.sort-buttons{
+  margin-bottom: 10px;
+}
+
 /* 카드 리스트 스타일 */
 .card-list {
   display: flex;
