@@ -13,8 +13,8 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
 
     // 특정 alcoholId에 해당하는 리뷰 목록 조회
-    public List<Review> getReviewsByAlcoholId(String productId) {
-        return reviewRepository.findByProductId(productId);
+    public List<Review> getReviewsByAlcoholId(String alcoholId) {
+        return reviewRepository.findByAlcoholId(alcoholId);
     }
     // 특정 userId에 해당하는 리뷰 조회
     public List<Review> getReviewsByUserId(String userId) {

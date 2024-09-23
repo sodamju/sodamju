@@ -37,10 +37,10 @@ public class ReviewController {
     }
 
 
-    // 특정 productId에 해당하는 리뷰 목록 반환
+    // 특정 alcoholId에 해당하는 리뷰 목록 반환
     @GetMapping
-    public List<ReviewWithUserDetails> getReviewsWithUserDetails(@RequestParam String productId) {
-        List<Review> reviews = reviewService.getReviewsByProductId(productId);
+    public List<ReviewWithUserDetails> getReviewsWithUserDetails(@RequestParam String alcoholId) {
+        List<Review> reviews = reviewService.getReviewsByAlcoholId(alcoholId);
         List<ReviewWithUserDetails> result = new ArrayList<>();
 
         for (Review review : reviews) {
