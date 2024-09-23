@@ -6,9 +6,9 @@ import { useAuth } from '../contexts/AuthContext';
 import './Review.css';
 
 const Review = ({ isEditing }) => {  // isEditing prop을 통해 작성 또는 수정 여부를 구분
-    const { productId, reviewId } = useParams();  // URL에서 productId 및 reviewId 파라미터를 가져옴
+    const { alcoholId, reviewId } = useParams();  // URL에서 alcoholId 및 reviewId 파라미터를 가져옴
     const { user } = useAuth();
-    const [product, setProduct] = useState(null);
+    const [alcohol, setAlcohol] = useState(null);
     const [rating, setRating] = useState(0);
     const [reviewText, setReviewText] = useState('');
     const [tipText, setTipText] = useState('');
@@ -19,20 +19,20 @@ const Review = ({ isEditing }) => {  // isEditing prop을 통해 작성 또는 �
 
     // 제품 정보 가져오기
     useEffect(() => {
-        const fetchProductDetails = async () => {
+        const fetchAlcoholDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/alcohols/${productId}`);
+                const response = await fetch(`http://localhost:8080/api/alcohols/${alcoholId}`);
                 if (!response.ok) {
                     throw new Error('제품 정보를 불러오지 못했습니다.');
                 }
                 const data = await response.json();
-                setProduct(data);
+                setAlcohol(data);
             } catch (error) {
-                console.error('Error fetching product details:', error);
+                console.error('Error fetching alcohol details:', error);
             }
         };
-        fetchProductDetails();
-    }, [productId]);
+        fetchAlcoholDetails();
+    }, [alcoholId]);
 
 
     // 수정하는 경우, 기존 리뷰 데이터를 가져오기
@@ -115,7 +115,7 @@ const Review = ({ isEditing }) => {  // isEditing prop을 통해 작성 또는 �
             return;  // 폼 검증에 실패하면 제출 중단
         }
     const reviewData = {
-        productId,
+        alcoholId,
         userId: user?.id,
         rating,
         reviewText,
@@ -134,7 +134,7 @@ const Review = ({ isEditing }) => {  // isEditing prop을 통해 작성 또는 �
             body: JSON.stringify(reviewData),
         });
         if (response.ok) {
-            navigate(`/DetailPage/${productId}`);  // 성공 시 상세 페이지로 리다이렉트
+            navigate(`/DetailPage/${alcoholId}`);  // 성공 시 상세 페이지로 리다이렉트
         } else {
             throw new Error('Failed to submit review');
         }
@@ -146,21 +146,21 @@ const Review = ({ isEditing }) => {  // isEditing prop을 통해 작성 또는 �
     return (
         <Container>
             <Row className='mt-3 mb-3 review-title'><h1>{isEditing ? '리뷰 수정' : '리뷰 쓰기'}</h1></Row>
-            {product && (
+            {alcohol && (
                 <Row className='mt-3 mb-3'>
                     <Card className='p-3'>
                         <Row>
                             <Col>
                                 <div className="image-Container">
-                                    <Image className='alcoholImg' src={product.thumUrl} alt={product.title} />
+                                    <Image className='alcoholImg' src={alcohol.thumUrl} alt={alcohol.title} />
                                 </div>
                             </Col>
                             <Col xs={9}>
                                 <Row>
-                                    <h1>{product.title}</h1>
+                                    <h1>{alcohol.title}</h1>
                                 </Row>
                                 <Row>
-                                    <div className='product-description'>{product.description}</div>
+                                    <div className='alcohol-description'>{alcohol.description}</div>
                                 </Row>
                             </Col>
                         </Row>

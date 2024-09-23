@@ -4,23 +4,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-const ProductCard = ({ product, isAuthenticated, user }) => {
+const ProductCard = ({ alcohol, isAuthenticated, user }) => {
   const [liked, setLiked] = useState(false);    // 좋아요 여부 상태
   const [likeCount, setLikeCount] = useState(0); // 좋아요 수 상태
 
   useEffect(() => {
     // 좋아요 수 가져오기
-    axios.get(`/api/likes/${product.id}/count`)
+    axios.get(`/api/likes/${alcohol.id}/count`)
       .then(response => setLikeCount(response.data.likeCount))
       .catch(error => console.error(error));
 
     // 로그인된 사용자의 좋아요 상태 가져오기 (로그인했을 경우)
     if (isAuthenticated) {
-      axios.get(`/api/likes/${product.id}/status`, { params: { memberId: user.id } })
+      axios.get(`/api/likes/${alcohol.id}/status`, { params: { memberId: user.id } })
         .then(response => setLiked(response.data.liked))
         .catch(error => console.error(error));
     }
-  }, [product.id, isAuthenticated, user]);
+  }, [alcohol.id, isAuthenticated, user]);
 
   const handleLikeClick = () => {
     if (!isAuthenticated) {
@@ -28,7 +28,7 @@ const ProductCard = ({ product, isAuthenticated, user }) => {
       return;
     }
 
-    const url = liked ? `/api/likes/${product.id}/unlike` : `/api/likes/${product.id}/like`;
+    const url = liked ? `/api/likes/${alcohol.id}/unlike` : `/api/likes/${alcohol.id}/like`;
     axios.post(url, { memberId: user.id })
       .then(() => {
         setLiked(!liked);
@@ -41,14 +41,14 @@ const ProductCard = ({ product, isAuthenticated, user }) => {
     <div className="productCard">
       <div className="topSection">
         <div className="image-Container">
-          <img className='alcoholImg' src={product.thumUrl} alt={product.title} />  {/* 제품 이미지 */}
+          <img className='alcoholImg' src={alcohol.thumUrl} alt={alcohol.title} />  {/* 제품 이미지 */}
         </div>
         <div className="productDetails">
           <div className="category">
-            <span>{product.category}</span>  {/* 카테고리 */}
+            <span>{alcohol.category}</span>  {/* 카테고리 */}
           </div>
-          <h2>{product.title}</h2>  {/* 주류 이름 */}
-          <p>{product.description}</p>
+          <h2>{alcohol.title}</h2>  {/* 주류 이름 */}
+          <p>{alcohol.description}</p>
           <div className="likes">
             <button 
                 className={`likeButton ${liked ? 'liked' : ''}`} 
@@ -66,10 +66,10 @@ const ProductCard = ({ product, isAuthenticated, user }) => {
       </div>
       <div className="description">
         <p className='description-title'>상품정보</p>
-        <p><strong>도수</strong>: {product.abv}</p>
-        <p><strong>규격</strong>: {product.volume}</p>
-        <p><strong>주 원료</strong>: {product.ingredient}</p>
-        <p><strong>제조사</strong>: {product.manufacture}</p>
+        <p><strong>도수</strong>: {alcohol.abv}</p>
+        <p><strong>규격</strong>: {alcohol.volume}</p>
+        <p><strong>주 원료</strong>: {alcohol.ingredient}</p>
+        <p><strong>제조사</strong>: {alcohol.manufacture}</p>
       </div>
     </div>
   );

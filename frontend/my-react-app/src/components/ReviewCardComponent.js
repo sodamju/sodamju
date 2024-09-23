@@ -14,7 +14,7 @@ const ReviewCardComponent = ({ review, onDetailClick }) => {
   return (
     <Card className='reviewCard'>
       <Card.Body>
-         <Card.Title onClick={() =>onDetailClick(review.review.productId)} style={{ cursor: 'pointer'}} >{review.title}</Card.Title>
+         <Card.Title onClick={() =>onDetailClick(review.review.alcoholId)} style={{ cursor: 'pointer'}} >{review.title}</Card.Title>
         <Card.Text>
           <div className="review-header">
             <span className="review-date">{formatDate(review.review.createdAt)}</span>  {/* 날짜 포맷 */}

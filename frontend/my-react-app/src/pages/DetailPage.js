@@ -8,8 +8,8 @@ import { useAuth } from '../contexts/AuthContext';  // AuthContext에서 로그�
 
 
 function DetailPage() {
-    const { productId } = useParams();  // URL에서 productId를 가져옴 (예: /DetailPage/:productId)
-    const [product, setProduct] = useState(null);  // 제품 정보를 저장할 상태
+    const { alcoholId } = useParams();  // URL에서 productId를 가져옴 (예: /DetailPage/:productId)
+    const [alcohol, setAlcohol] = useState(null);  // 제품 정보를 저장할 상태
     const { isAuthenticated, user } = useAuth();  // 로그인 여부와 사용자 정보 확인
     const navigate = useNavigate();  // 페이지 이동을 위한 훅
 
@@ -18,19 +18,19 @@ function DetailPage() {
     useEffect(() => {
         const fetchProductDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/alcohols/${productId}`);
+                const response = await fetch(`http://localhost:8080/api/alcohols/${alcoholId}`);
                 if (!response.ok) {
                     throw new Error('제품 정보를 불러오지 못했습니다.');
                 }
                 const data = await response.json();
-                setProduct(data);  // 제품 정보를 상태로 설정
+                setAlcohol(data);  // 제품 정보를 상태로 설정
             } catch (error) {
                 console.error('Error fetching product details:', error);
             }
         };
 
         fetchProductDetails();
-    }, [productId]);
+    }, [alcoholId]);
 
     //리뷰쓰기 버튼
     const handleReviewClick = () => {
@@ -38,20 +38,20 @@ function DetailPage() {
             alert('로그인이 필요합니다.');  // 로그인 안 된 경우 경고창
             return;
         }
-        navigate(`/review/${productId}`);  // 로그인된 경우 리뷰 작성 페이지로 이동
+        navigate(`/review/${alcoholId}`);  // 로그인된 경우 리뷰 작성 페이지로 이동
     };
 
     return (
         <div className="content">
-            {product && (
+            {alcohol && (
                 <ProductCard 
-                    product={product} 
+                    alcohol={alcohol} 
                     isAuthenticated={isAuthenticated} 
                     user={user}  // 로그인 상태와 사용자 정보를 ProductCard에 전달
                 />
             )}
             <InfoCard />
-            {product && <ReviewList onReviewClick={handleReviewClick} productId={productId} />}
+            {alcohol && <ReviewList onReviewClick={handleReviewClick} alcoholId={alcoholId} />}
         </div>
     );
 }

@@ -6,7 +6,7 @@ import { faEdit,  faTimesCircle, faPen } from '@fortawesome/free-solid-svg-icons
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';  // 페이지 이동을 위해 사용
 
-function ReviewList({ productId, onReviewClick }) {
+function ReviewList({ alcoholId, onReviewClick }) {
     const [reviews, setReviews] = useState([]);
     const { user } = useAuth();  // 현재 로그인한 사용자 정보
     const navigate = useNavigate();  // 페이지 이동을 위한 훅
@@ -19,7 +19,7 @@ function ReviewList({ productId, onReviewClick }) {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/reviews?productId=${productId}`);
+                const response = await fetch(`http://localhost:8080/api/reviews?alcoholId=${alcoholId}`);
                 if (!response.ok) {
                     throw new Error('리뷰 데이터를 가져오지 못했습니다.');
                 }
@@ -32,7 +32,7 @@ function ReviewList({ productId, onReviewClick }) {
         };
 
         fetchReviews();
-    }, [productId]);
+    }, [alcoholId]);
 
     // 리뷰 삭제 함수
     const handleDelete = async (reviewId) => {
@@ -61,7 +61,7 @@ function ReviewList({ productId, onReviewClick }) {
 
     // 리뷰 수정 함수
     const handleEdit = (reviewId) => {
-        navigate(`/review/${productId}/edit/${reviewId}`);
+        navigate(`/review/${alcoholId}/edit/${reviewId}`);
     };
 
     // 날짜 포맷 변환 함수 (년/월/일 형식)
@@ -139,7 +139,7 @@ function ReviewList({ productId, onReviewClick }) {
                         {review.review.images && review.review.images.length > 0 && (
                             <div className="review-images">
                                 {review.review.images.map((imageUrl, index) => (
-                                    <img key={index} src={imageUrl} alt={`리뷰 이미지 ${index + 1}`} className="review-image" onClick={() => handleImageClick(review.images, index)} />
+                                    <img key={index} src={imageUrl} alt={`리뷰 이미지 ${index + 1}`} className="review-image" onClick={() => handleImageClick(review.review.images, index)} />
                                 ))}
                             </div>
                         )}
