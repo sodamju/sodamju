@@ -137,7 +137,7 @@ const MyPage = () => {
             {/* 활동 상세 */}
             <Row className='mt-3 mb-3'><h3>내 활동</h3></Row>
             <Row className='mt-3 mb-3'>
-                <Card className='p-3'>
+                <Card className='p-3 color-box'>
                     <Tab.Container defaultActiveKey="home">
                         <Nav className='mb-3' variant="pills" id="myTab">
                             <Nav.Item>

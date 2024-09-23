@@ -39,3 +39,7 @@ h3 {
   .camera:hover {
     color: #F3E0D6;
   }
+
+.color-box {
+    background-color: #F3E0D6;
+}
