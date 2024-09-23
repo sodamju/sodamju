@@ -1,3 +1,6 @@
+.review-title h1 {
+  font-size: 1.5rem;
+}
 .imageContainer {
     flex-shrink: 0;
     width: 200px;
@@ -7,3 +10,22 @@
     align-items: center;
     justify-content: center;
   }
+  .reviewSubmitBtn {
+    width: 100%;
+    display: block;
+    margin: 30px 0 50px auto;
+}
+.p-3 h1 {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 8px;
+  padding-bottom: 20px;
+}
+.product-description{
+  margin: 5px 0;
+  line-height: 1.4;
+  color: #666;
+  font-size: 15px;
+  font-weight: bold;
+}

@@ -1,16 +1,16 @@
 import React from 'react';
 import './ContentSection.css';
-import bottleImage from '../assets/images/bottle.webp'; // 이미지 import
+import bottleImage from '../assets/images/logo2.png'; // 이미지 import
 
 function ContentSection() {
   return (
     <section className="content-section">
       <img className="image-placeholder" src={bottleImage} alt="한국 전통주" />
       <div className="text-content">
-        <h3>한국의 전통주</h3>
-        <h4>시간을 담은 맛과 멋</h4>
-        <p>한국의 전통주는 다양한 원료와 독특한 발효 기술을 바탕으로 한 오랜 역사를 자랑합니다. 막걸리, 소주, 청주, 그리고 과실주와 같은 다양한 종류가 있으며, 각각의 술은 그 지역의 특색과 전통을 반영합니다.</p>
-        <p>한국의 전통주는 그 제조 방법과 종류, 맛에서 보여주는 다양성으로 많은 사람들에게 사랑받고 있으며, 한국 문화의 중요한 부분을 이루고 있습니다. 전통주는 그 자체로도 예술이며, 한국인의 삶과 밀접하게 연관되어 있습니다...</p>
+        <h3>마음을 담다, 소담주</h3>
+        <h4>각 잔에 담긴 정성과 풍요로움을 경험하세요.</h4>
+        <p> '소담', 한국어로 '생김새가 탐스럽다'는 뜻을 가진 이 말처럼, 우리의 술은 눈을 즐겁게 하는 아름다움과 입안 가득 퍼지는 풍성한 맛의 조화를 선사합니다.</p>
+        <p>새로운 만남, 소중한 사람들과의 따뜻한 대화, 모든 것이 더욱 의미있고 기억에 남도록 '소담주'가 여러분과 함께합니다</p>
       </div>
     </section>
   );

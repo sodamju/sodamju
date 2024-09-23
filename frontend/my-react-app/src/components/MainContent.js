@@ -18,8 +18,8 @@ function MainContent() {
   return (
     <main className="main">
       <div className="main-content">
-        <h1 className="title">SipSip</h1>
-        <h2 className="subtitle">( : 조금씩 마시다, 한모금)</h2>
+        <h1 className="title">소담:주</h1>
+        <h2 className="subtitle">( : 생김새가 탐스럽다, 먹음직)</h2>
         <div className="search-bar">
           <input 
             type="text" 

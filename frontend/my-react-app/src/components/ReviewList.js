@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './ReviewList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { Badge, Modal, Button, Image } from 'react-bootstrap';
+import { faEdit, faTrashAlt, faTimesCircle , faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';  // 페이지 이동을 위해 사용
-import { Badge } from 'react-bootstrap';
 
-function ReviewList({ productId }) {
+function ReviewList({ productId, onReviewClick }) {
     const [reviews, setReviews] = useState([]);
     const { user } = useAuth();  // 현재 로그인한 사용자 정보
     const navigate = useNavigate();  // 페이지 이동을 위한 훅
+    const [showModal, setShowModal] = useState(false);
+    const [selectedImages, setSelectedImages] = useState([]);
+    const [imageIndex, setImageIndex] = useState(0);
+
 
     // 리뷰 데이터를 가져오는 함수
     useEffect(() => {
@@ -66,11 +70,39 @@ function ReviewList({ productId }) {
         return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
     };
 
+    // 이미지 클릭했을 때
+    const handleImageClick = (images, index) => {
+        setSelectedImages(images);
+        setImageIndex(index);
+        setShowModal(true);
+    };
+    
+    // 이미지 양옆 이동
+    const handleNextImage = () => {
+        if (imageIndex < selectedImages.length - 1) {
+            setImageIndex(imageIndex + 1);
+        }
+    };
+    
+    const handlePrevImage = () => {
+        if (imageIndex > 0) {
+            setImageIndex(imageIndex - 1);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+    
+
     return (
         <div className="review">
             <div className="review-list">
                 <div className='review-title'>
                     <p>리뷰 ({reviews.length})</p>  {/* 리뷰 개수 표시 */}
+                    <button onClick={onReviewClick} className="write-review-btn">
+                        <FontAwesomeIcon icon={faPen} className="write-icon" /> 리뷰 쓰기
+                    </button>
                 </div>
                 {reviews.map((review) => (
                     <div className="review-item" key={review.id}>
@@ -79,10 +111,11 @@ function ReviewList({ productId }) {
                                 <img className="avatar" src={review.profileImageUrl || "default-profile-url.jpg"} alt='profileImage'/>
                             </div>
                             <div className="review-info">
-                                <h4>{review.nickname || "익명 사용자"}
-                                    <Badge bg="secondary">{review.ageGroup}대</Badge>
-                                    <Badge bg="secondary">lv.{review.level}</Badge>
-                                </h4>
+                                <h4>{review.nickname || "익명 사용자"}</h4>
+                                <div className="review-badges">
+                                    <Badge className='badge' bg="secondary">{review.ageGroup}대</Badge>
+                                    <Badge className='badge' bg="secondary">lv.{review.level}</Badge>
+                                </div>
                                 <span className="review-date">{formatDate(review.review.createdAt)}</span>  {/* 날짜 포맷 */}
                                 <span className="review-rating">{"★".repeat(review.review.rating)}</span> {/* 별점 표시 */}
                             </div>
@@ -94,7 +127,7 @@ function ReviewList({ productId }) {
                                         className="action-icon"
                                     />
                                     <FontAwesomeIcon
-                                        icon={faTrashAlt}
+                                        icon={faTimesCircle}
                                         onClick={() => handleDelete(review.id)}
                                         className="action-icon"
                                     />
@@ -106,10 +139,24 @@ function ReviewList({ productId }) {
                         {review.review.images && review.review.images.length > 0 && (
                             <div className="review-images">
                                 {review.review.images.map((imageUrl, index) => (
-                                    <img key={index} src={imageUrl} alt={`리뷰 이미지 ${index + 1}`} className="review-image" />
+                                    <img key={index} src={imageUrl} alt={`리뷰 이미지 ${index + 1}`} className="review-image" onClick={() => handleImageClick(review.images, index)} />
                                 ))}
                             </div>
                         )}
+                        <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
+                            <Modal.Body>
+                                <Image src={selectedImages[imageIndex]} alt="Selected Review Image" style={{ width: '100%' }} />
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handlePrevImage} disabled={imageIndex === 0}>
+                                    이전
+                                </Button>
+                                <Button variant="primary" onClick={handleNextImage} disabled={imageIndex === selectedImages.length - 1}>
+                                    다음
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+
                     </div>
                 ))}
             </div>

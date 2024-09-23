@@ -51,10 +51,7 @@ function DetailPage() {
                 />
             )}
             <InfoCard />
-            {product && <ReviewList productId={productId} />}
-            <button onClick={handleReviewClick} className="write-review-btn">
-                리뷰 쓰기
-            </button>
+            {product && <ReviewList onReviewClick={handleReviewClick} productId={productId} />}
         </div>
     );
 }

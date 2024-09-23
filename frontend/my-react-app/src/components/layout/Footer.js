@@ -1,11 +1,12 @@
 import React from 'react';
 import './Footer.css';
+import logoImg from '../../assets/images/logo2.png';
 
 function Footer() {
   return (
     <footer className="footer">
       <div className="footer-left">
-        <a href="/" className="logo">Logo</a>
+        <a href="/" className="logo"><img src={logoImg} alt="Logo" /></a>
         <div className="social-icons">
           <a href="https://x.com" className="social-icon">X</a>
           <a href="https://instagram.com" className="social-icon">Instagram</a>
@@ -14,14 +15,13 @@ function Footer() {
         </div>
       </div>
       <div className="footer-middle">
-        <h4>Use cases</h4>
+        <h5>contact</h5>
         <ul>
-          <li><a href="/ui-design">UI design</a></li>
-          <li><a href="/prototyping">Prototyping</a></li>
+          <li><a href="/ui-design">example@gmail.com</a></li>
         </ul>
       </div>
       <div className="footer-right">
-        <h4>Resources</h4>
+        <h5>Resources</h5>
         <ul>
           <li><a href="/blog">Blog</a></li>
           <li><a href="/help-center">Help Center</a></li>

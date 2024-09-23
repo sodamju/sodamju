@@ -2,7 +2,7 @@
 .header {
   display: flex;
   padding: 20px;
-  background-color: #8A9972; /* 전통 한지 색상 */
+  background-color: #F3E0D6; /* 전통 한지 색상 */
 }
 
 .logo {
@@ -10,6 +10,13 @@
   font-size: 24px;
   color: #555;
   margin-right: auto;
+  margin-left: 15px;
+}
+
+.logo img {
+  width: 55px;
+  height: 55px;
+  margin: 0;
 }
 
 .nav {
@@ -27,14 +34,16 @@
   background-color: #586149;
   color: white;
   border-radius: 50px;
-  font-family: 'Noto Serif KR', serif;
   font-size: 15px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .btn-logged-in {
-  margin-left: 10px;  /* 로그인된 상태일 때 */
+  margin-left: auto;  /* 로그인된 상태일 때 */
+}
+.btn-logout {
+  margin-left: 10px;
 }
 
 .btn-logged-out {
@@ -43,4 +52,5 @@
 
 .nav .btn:hover {
   background-color: #454D39;
+  color: white;
 }

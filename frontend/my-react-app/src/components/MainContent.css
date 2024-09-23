@@ -8,7 +8,10 @@
   
   text-align: center;
   padding: 50px 20px;
-    
+  }
+
+  .main-content h1 {
+    font-family: 'Noto Serif KR', serif; /* 한글 서체 사용 */
   }
   
   .title {

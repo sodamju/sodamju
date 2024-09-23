@@ -54,8 +54,8 @@ const Login = () => {
         disabled={loading} // 로딩 중이면 입력 폼과 버튼 비활성화
       >
         {error && <p style={{ color: 'red' }}>{error}</p>} {/* 에러 메시지 표시 */}
-        <div className="login-link mt-3">
-          <Link to="/signup">회원가입</Link> / <Link to="/FindPassword">비밀번호 찾기</Link>
+        <div className="login-link mt-3 text-center">
+          <Link to="/signup">회원가입</Link>
         </div>
       </FormComponent>
     </SignupCardComponent>

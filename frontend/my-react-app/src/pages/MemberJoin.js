@@ -52,7 +52,7 @@ const MemberJoin = ({ formData, setFormData, nextStep }) => {
             value={ formData.password }
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}/>
       </Form.Group>
-      <Button className="sign-btn" variant="dark" onClick={handleNext}>Next</Button>
+      <Button className="sign-btn" variant="dark" onClick={handleNext}>다음</Button>
     </SignupCardComponent>
   ); 
 };
