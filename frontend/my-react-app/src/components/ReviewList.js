@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ReviewList.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Badge, Modal, Button, Image } from 'react-bootstrap';
-import { faEdit, faTrashAlt, faTimesCircle , faPen, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit,  faTimesCircle, faPen } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';  // 페이지 이동을 위해 사용
 
@@ -156,7 +156,6 @@ function ReviewList({ productId, onReviewClick }) {
                                 </Button>
                             </Modal.Footer>
                         </Modal>
-
                     </div>
                 ))}
             </div>

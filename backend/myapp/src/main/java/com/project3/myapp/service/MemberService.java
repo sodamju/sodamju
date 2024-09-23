@@ -15,6 +15,11 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    // 중복체크로직 
+    public Boolean isEmailRegistered(String email){
+        return memberRepository.existsByEmail(email);
+    }
+
     // 로그인 처리 (이메일과 비밀번호로 사용자 인증)
     public Member loginMember(String email, String password) {
         // 이메일로 회원을 찾음

@@ -11,6 +11,7 @@ import jakarta.servlet.http.Cookie;
 
 
 
+
 @RestController
 @RequestMapping("/api/members")
 public class MemberController {
@@ -29,6 +30,13 @@ public class MemberController {
         Member savedMember = memberService.saveMember(member);
 
         return ResponseEntity.ok(savedMember);
+    }
+
+    // 이메일 중복 체크
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
+         boolean exists = memberService.isEmailRegistered(email);
+        return ResponseEntity.ok(exists);
     }
     
     // 로그인 엔드포인트
