@@ -1,2 +1,10 @@
-# sipsip
-전통주의 성분 정보 제공, 사용자 간 소통, 음식 조합 꿀팁 공유, 추천 순위를 통해 전통주를 즐길 수 있는 웹사이트 프로젝트입니다.
+# 🌸 전통주의 가치를 현대와 잇는 새로운 이야기
+### 마음을 담다 소담:주
+
+<br/>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a52230fb-c425-45dd-8532-6f41f50060e2" width="950" height="600">
+</p>
+
+<br/>
